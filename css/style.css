@@ -1,0 +1,117 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+html,body{
+	height:100%;
+	width:100%;
+}
+
+body{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+index{
+	background:white;
+	display: flex;
+	color:#333;
+	justify-content: space-around;
+	align-items: center;
+}
+
+track-list{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-family: "Rubik";
+	font-weight: 400;
+}
+
+track-list .list-container{
+	height:50px;
+}
+
+track-list .list-container .list-item{
+	height:100%;
+	display: flex;
+	padding: 0 16px;
+	align-items: center;
+	justify-content: flex-end;
+	transition: 0.5s ease;
+}
+track-list .list-container .list-item:hover{
+	color:#02E387;
+	border:0;
+}
+
+.player{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	padding-top:52px;
+}
+
+.album-details{
+	padding:16px;
+	font-family: "Rubik";
+	font-weight: 500;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.player-controls{
+	display: flex;
+	flex-direction: column;
+}
+
+.player-controls .seek-bar{
+	height:50px;
+	width:500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.seek{
+	margin:10px;
+	height:2px;
+	width:200px;
+}
+
+#progress{
+	min-width: 0;
+	max-width:100%;
+	height:2px;
+	background:#02E387;
+}
+
+.player-controls .player-buttons{
+	height:50px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.player-buttons > div{
+	padding:10px;
+	font-size:25px;
+	color:#333;
+}
+
+.player-buttons > div:hover{
+	color:#02E387;
+	transition: 0.2s ease;
+}
+
+.player-controls .volume-bar{
+	height:50px;
+}
+
+.active-btn{
+	color:#02E387;
+}
