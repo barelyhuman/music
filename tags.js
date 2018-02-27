@@ -10,7 +10,7 @@
 })(function(riot, require, exports, module) {
 var axios = require('axios');
 
-riot.tag2('index', '<track-list tracks="{this.tracks}" click="{this.setSource}"></track-list> <track-control trackname="{this.trackname}" audio="{this.audioSrc}"></track-control>', '', '', function(opts) {
+riot.tag2('index', '<track-list tracks="{this.tracks}" click="{this.setSource}"></track-list> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control>', '', '', function(opts) {
 
 
 	{
@@ -18,12 +18,13 @@ riot.tag2('index', '<track-list tracks="{this.tracks}" click="{this.setSource}">
 	}
 
 	var self = this;
+	var API = "https://aliezsid.github.io/musico-api"
 
 	{
 
 	}
 
-	axios.get('https://alienblogger.github.io/musico-api/tracks/tracks.json').then(function(res){
+	axios.get(API+'/tracks/tracks.json').then(function(res){
 		self.tracks = res.data;
 		self.update();
 	});
@@ -32,15 +33,40 @@ riot.tag2('index', '<track-list tracks="{this.tracks}" click="{this.setSource}">
 
 	}
 
-	this.setSource = function(track){
-		if(!track.target){
-			this.audioSrc=track.url;
-			this.trackname=track.name;
+	this.nextTrack = function(){
+		var len = this.tracks.length-1;
+		if(this.playIndex<len){
+			this.setSource(this.playIndex+1)
 		}
+		else{
+			this.setSource(0)
+		}
+		return;
+	}.bind(this)
+
+	this.prevTrack = function(){
+		var len = this.tracks.length-1;
+		if(this.playIndex<=0){
+			this.setSource(len)
+		}
+		else{
+			this.setSource(this.playIndex-1)
+		}
+		return;
+	}.bind(this)
+
+	this.setSource = function(playIndex){
+		var track = this.tracks[playIndex];
+		if(track){
+			this.audioSrc=API.replace('musico-api','')+"/"+track.source;
+			this.trackname=track.name;
+			this.playIndex = playIndex;
+		}
+		return;
 	}.bind(this)
 
 });
-riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div class="album-details"> {opts.trackname||⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div>{this.playedTime || ⁗00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div>{this.totalDuration || ⁗00.00⁗}</div> </div> <div class="player-buttons"> <div><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
+riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div class="album-details"> {opts.trackname||⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
 
 
 	var self = this;
@@ -51,6 +77,7 @@ riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div
 	});
 
 	this.on('update',function(){
+
 		if(opts.audio && opts.audio !== this.audio.src){
 			this.audio.src=opts.audio;
 			this.playing = true;
@@ -77,9 +104,25 @@ riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div
 			self.playing = false;
 		}
 
+		this.audio.onended = function(){
+			self.nextTrack();
+			self.audio.src=opts.audio;
+		}
+
 	});
 
+	this.nextTrack = function(){
+		return opts.nexttrack();
+	}
+
+	this.prevTrack = function(){
+		return opts.prevtrack()
+	}
+
 	this.play=function(){
+		if(!opts.audio){
+			return;
+		}
 		this.audio.currentTime = this.seekTime || 0;
 		this.audio.play();
 		this.playing = true;
@@ -98,18 +141,15 @@ riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div
 	function secsToTime(secs) {
 		var date = new Date(null);
 		date.setSeconds(secs);
-		var result = date.toISOString().substr(11, 8);
+		var result = date.toISOString().substr(14, 5);
 		return result;
 	}
 
 });
-riot.tag2('track-list', '<div class="list-container" each="{item in opts.tracks}"> <div data-url="{item.source}" data-track="{item.name}" class="list-item" onclick="{changeTrack}">{item.name}</div> </div>', '', '', function(opts) {
+riot.tag2('track-list', '<div class="list-container" each="{item,index in opts.tracks}"> <div class="list-item" onclick="{()=>changeTrack(index)}"> <div>{item.name}</div> <div class="secondary-text">{item.artist}</div> </div> </div>', '', '', function(opts) {
 
-	this.changeTrack = function(e){
-		var track ={};
-		track.name=e.target.dataset.track;
-		track.url=e.target.dataset.url;
-		return opts.click(track);
+	this.changeTrack = function(index){
+		return opts.click(index);
 	}
 
 });});

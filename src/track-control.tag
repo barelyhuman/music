@@ -7,16 +7,16 @@
 		</div>
 		<div class="player-controls">
 			<div class="seek-bar">
-				<div>{ this.playedTime || "00.00"}</div>
+				<div class="timestamp">{ this.playedTime || "00.00"}</div>
 				<div class="seek">
 					<div id="progress"></div>
 				</div>
-				<div>{ this.totalDuration || "00.00"}</div>
+				<div class="timestamp">{ this.totalDuration || "00.00"}</div>
 			</div>
 			<div class="player-buttons"> 
-				<div><i class="typcn typcn-media-rewind"></i></div>
+				<div onclick={prevTrack}><i class="typcn typcn-media-rewind"></i></div>
 				<div style="font-size:40px" onclick={togglePlay}><i class={this.playing?'typcn typcn-media-pause-outline active-btn':'typcn typcn-media-play-outline'}></i></div>
-				<div><i class="typcn typcn-media-fast-forward"></i></div>
+				<div onclick={nextTrack}><i class="typcn typcn-media-fast-forward"></i></div>
 			</div>
 			<div class="volume-bar"></div>
 		</div>
@@ -31,6 +31,7 @@
 	});
 
 	this.on('update',function(){
+
 		if(opts.audio && opts.audio !== this.audio.src){
 			this.audio.src=opts.audio;
 			this.playing = true;
@@ -57,9 +58,26 @@
 			self.playing = false;
 		}
 
+		this.audio.onended = function(){
+			self.nextTrack();
+			self.audio.src=opts.audio;
+		}
+
 	});
 
+
+	this.nextTrack = function(){
+		return opts.nexttrack();
+	}
+
+	this.prevTrack = function(){
+		return opts.prevtrack()
+	}
+
 	this.play=function(){
+		if(!opts.audio){
+			return;	
+		}
 		this.audio.currentTime = this.seekTime || 0;
 		this.audio.play();
 		this.playing = true;
@@ -78,7 +96,7 @@
 	function secsToTime(secs) {
 		var date = new Date(null);
 		date.setSeconds(secs);
-		var result = date.toISOString().substr(11, 8);
+		var result = date.toISOString().substr(14, 5);
 		return result;
 	}
 

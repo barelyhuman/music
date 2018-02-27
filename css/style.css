@@ -3,31 +3,44 @@
 	padding:0;
 }
 
-html,body{
+html{
 	height:100%;
 	width:100%;
 }
 
 body{
+	min-width: 100%;
+	min-height: 100%;
+	background:#f1f1f1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
 index{
+	box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.12);
 	background:white;
 	display: flex;
 	color:#333;
 	justify-content: space-around;
 	align-items: center;
+	border-radius: 5px;
+}
+
+track-control{
+	box-sizing: border-box;
+	padding:0px 50px;
 }
 
 track-list{
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	font-family: "Rubik";
-	font-weight: 400;
+	width:210px;
+	height: 255px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: "Rubik";
+    font-weight: 400;
+    border-right:1px solid rgba(0,0,0,0.12);
 }
 
 track-list .list-container{
@@ -37,9 +50,8 @@ track-list .list-container{
 track-list .list-container .list-item{
 	height:100%;
 	display: flex;
+	flex-direction: column;
 	padding: 0 16px;
-	align-items: center;
-	justify-content: flex-end;
 	transition: 0.5s ease;
 }
 track-list .list-container .list-item:hover{
@@ -71,7 +83,8 @@ track-list .list-container .list-item:hover{
 
 .player-controls .seek-bar{
 	height:50px;
-	width:500px;
+	width: 100%;
+	max-width:500px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -114,4 +127,45 @@ track-list .list-container .list-item:hover{
 
 .active-btn{
 	color:#02E387;
+}
+
+.secondary-text{
+	font-size:12px;
+	color:#999;
+}
+
+.timestamp{
+	font-family: "Rubik";
+	font-size:12px;
+	color:#333;
+}
+
+@media (max-width: 767px) {
+	index{
+		margin:0 auto;
+		height:100vh;
+		width:100vw;
+		flex-wrap: wrap;
+	}
+
+	track-list{
+		padding-top: 16px;
+		justify-content: flex-start;
+		border:0px;
+		background:rgba(0,0,0,0.03);
+		order:2;
+		overflow: hidden;
+		width:100%;
+		height: 60%;
+		overflow-x: hidden;
+		overflow-y: scroll;
+	}
+
+	track-control{
+		height:40%;
+		order:1;
+		width:100%;
+	}
+
+
 }
