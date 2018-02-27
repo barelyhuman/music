@@ -10,7 +10,7 @@
 })(function(riot, require, exports, module) {
 var axios = require('axios');
 
-riot.tag2('index', '<track-list tracks="{this.tracks}" click="{this.setSource}"></track-list> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control>', '', '', function(opts) {
+riot.tag2('index', '<div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control>', '', '', function(opts) {
 
 
 	{
