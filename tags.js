@@ -13,25 +13,15 @@ var axios = require('axios');
 riot.tag2('index', '<div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control>', '', '', function(opts) {
 
 
-	{
-
-	}
-
 	var self = this;
-	var API = "https://aliezsid.github.io/musico-api"
+	console.log(window.location.href);
+	var API = window.location.href.replace('/orion','/musico-api')
+	console.log(API);
 
-	{
-
-	}
-
-	axios.get(API+'/tracks/tracks.json').then(function(res){
+	axios.get(API+'tracks/tracks.json').then(function(res){
 		self.tracks = res.data;
 		self.update();
 	});
-
-	{
-
-	}
 
 	this.nextTrack = function(){
 		var len = this.tracks.length-1;
