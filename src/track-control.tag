@@ -1,6 +1,6 @@
 <track-control class="track-control">
 
-	<audio id="audio"></audio>
+	<audio id="audio" autoplay></audio>
 	<div class="player">
 		<div class="album-details">
 		{opts.trackname || "Select a track..." }
@@ -31,8 +31,8 @@
 	});
 
 	this.on('update',function(){
-
 		if(opts.audio && opts.audio !== this.audio.src){
+			console.log("inside");
 			this.audio.src=opts.audio;
 			this.playing = true;
 			this.audio.play();

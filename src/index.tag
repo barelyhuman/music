@@ -10,8 +10,8 @@ var axios = require('axios');
 	<script>	
 
 	
-		//variables
-		const API = 'https://orion-server.herokuapp.com/api'
+	//variables
+	const API = 'https://orion-server.herokuapp.com/api'
 
 	
 		//app handlers
@@ -49,6 +49,7 @@ var axios = require('axios');
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;	
 			this.playIndex = playIndex;		
+			this.update();
 		}
 		return;
 	}

@@ -1,4 +1,4 @@
-(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var riot = require('riot');
 var tags = require('./tags.js');
 
@@ -12312,7 +12312,7 @@ var axios = require('axios');
 riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="player-container"> <div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control> </div>', '', '', function(opts) {
 
 
-		const API = 'https://orion-server.herokuapp.com/api'
+	const API = 'https://orion-server.herokuapp.com/api'
 
 	this.updateDataList = function(dataList){
 		this.tracks = dataList;
@@ -12347,6 +12347,7 @@ riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchba
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;
 			this.playIndex = playIndex;
+			this.update();
 		}
 		return;
 	}.bind(this)
@@ -12376,7 +12377,7 @@ riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" placeholder="Sear
     this.apiCall = debounce(250)(this.searchTermChanged)
 
 });
-riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
+riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
 
 
 	var self = this;
@@ -12387,8 +12388,8 @@ riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div
 	});
 
 	this.on('update',function(){
-
 		if(opts.audio && opts.audio !== this.audio.src){
+			console.log("inside");
 			this.audio.src=opts.audio;
 			this.playing = true;
 			this.audio.play();
