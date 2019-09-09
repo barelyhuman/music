@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "browserify": "^14.4.0",
-    "parallelshell": "^3.0.1",
+    "concurrently": "*",
     "riotify": "^2.0.0",
     "serve": "*",
     "watchify": "^3.9.0"
@@ -19,6 +19,6 @@
     "watch": "watchify app.js -t riotify -o dist/app.js -v",
     "compile": "riot -m -w src tags.js",
     "serve": "serve .",
-    "start": "parallelshell 'yarn serve' 'yarn compile' 'yarn watch'"
+    "start": "concurrently 'yarn serve' 'yarn compile' 'yarn watch'"
   }
 }
