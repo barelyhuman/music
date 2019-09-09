@@ -1,17 +1,17 @@
 <track-control class="track-control">
 
-	<audio id="audio" autoplay></audio>
+	<audio id="audio" autoplay codecs="mp3"></audio>
 	<div class="player">
 		<div class="album-details">
 		{opts.trackname || "Select a track..." }
 		</div>
 		<div class="player-controls">
 			<div class="seek-bar">
-				<div class="timestamp">{ this.playedTime || "00.00"}</div>
+				<div class="timestamp">{ this.playedTime || "00.00.00"}</div>
 				<div class="seek">
 					<div id="progress"></div>
 				</div>
-				<div class="timestamp">{ this.totalDuration || "00.00"}</div>
+				<div class="timestamp">{ this.totalDuration || "00.00.00"}</div>
 			</div>
 			<div class="player-buttons"> 
 				<div onclick={prevTrack}><i class="typcn typcn-media-rewind"></i></div>
@@ -22,8 +22,9 @@
 		</div>
 	</div>
 
+<script>
 
-	var self = this;
+		var self = this;
 
 	this.on("mount",function(){
 		this.audio = document.getElementById('audio');
@@ -32,16 +33,17 @@
 
 	this.on('update',function(){
 		if(opts.audio && opts.audio !== this.audio.src){
-			console.log("inside");
 			this.audio.src=opts.audio;
 			this.playing = true;
 			this.audio.play();
 		}
 
 		this.audio.onloadedmetadata = function(){
+			this.duration = isNaN(this.duration)?opts.durationfromdb:this.duration;
+			self.totalDurationInSecs = this.duration;
 			self.totalDuration = secsToTime(this.duration);
 			self.seekposition = 10;
-			self.update();
+			self.update();	
 		}
 
 		this.audio.onplaying=function(){
@@ -50,7 +52,7 @@
 
 		this.audio.ontimeupdate = function(){
 			self.playedTime = secsToTime(this.currentTime);
-			self.progress.style.width = (this.currentTime/this.duration)*100+"%";
+			self.progress.style.width = (this.currentTime/self.totalDurationInSecs)*100+"%";
 			self.update();
 		}
 
@@ -96,8 +98,12 @@
 	function secsToTime(secs) {
 		var date = new Date(null);
 		date.setSeconds(secs);
-		var result = date.toISOString().substr(14, 5);
+		var result = date.toISOString().substr(11, 8);
 		return result;
 	}
+
+</script>
+
+
 
 </track-control>

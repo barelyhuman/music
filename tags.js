@@ -10,7 +10,7 @@
 })(function(riot, require, exports, module) {
 var axios = require('axios');
 
-riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="player-container"> <div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control> </div>', '', '', function(opts) {
+riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="player-container"> <div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div>', '', '', function(opts) {
 
 
 	const API = 'https://orion-server.herokuapp.com/api'
@@ -48,6 +48,8 @@ riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchba
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;
 			this.playIndex = playIndex;
+			console.log(track);
+			this.trackDuration = track.duration.seconds
 			this.update();
 		}
 		return;
@@ -78,10 +80,9 @@ riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" placeholder="Sear
     this.apiCall = debounce(250)(this.searchTermChanged)
 
 });
-riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
+riot.tag2('track-control', '<audio id="audio" autoplay codecs="mp3"></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
 
-
-	var self = this;
+		var self = this;
 
 	this.on("mount",function(){
 		this.audio = document.getElementById('audio');
@@ -90,13 +91,14 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 	this.on('update',function(){
 		if(opts.audio && opts.audio !== this.audio.src){
-			console.log("inside");
 			this.audio.src=opts.audio;
 			this.playing = true;
 			this.audio.play();
 		}
 
 		this.audio.onloadedmetadata = function(){
+			this.duration = isNaN(this.duration)?opts.durationfromdb:this.duration;
+			self.totalDurationInSecs = this.duration;
 			self.totalDuration = secsToTime(this.duration);
 			self.seekposition = 10;
 			self.update();
@@ -108,7 +110,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 		this.audio.ontimeupdate = function(){
 			self.playedTime = secsToTime(this.currentTime);
-			self.progress.style.width = (this.currentTime/this.duration)*100+"%";
+			self.progress.style.width = (this.currentTime/self.totalDurationInSecs)*100+"%";
 			self.update();
 		}
 
@@ -153,7 +155,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 	function secsToTime(secs) {
 		var date = new Date(null);
 		date.setSeconds(secs);
-		var result = date.toISOString().substr(14, 5);
+		var result = date.toISOString().substr(11, 8);
 		return result;
 	}
 

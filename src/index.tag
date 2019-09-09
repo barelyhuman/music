@@ -4,7 +4,7 @@ var axios = require('axios');
 	<searchbar updatedatalist={this.updateDataList}></searchbar>
 	<div class="player-container">
 		<div class="scroll-container"><track-list tracks={this.tracks} click={this.setSource}></track-list></div>
-	<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} audio={this.audioSrc}></track-control>
+	<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
 	</div>
 
 	<script>	
@@ -12,8 +12,6 @@ var axios = require('axios');
 	
 	//variables
 	const API = 'https://orion-server.herokuapp.com/api'
-
-	
 		//app handlers
 	
 	updateDataList(dataList){
@@ -49,6 +47,8 @@ var axios = require('axios');
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;	
 			this.playIndex = playIndex;		
+			console.log(track);
+			this.trackDuration = track.duration.seconds
 			this.update();
 		}
 		return;
