@@ -10,18 +10,15 @@
 })(function(riot, require, exports, module) {
 var axios = require('axios');
 
-riot.tag2('index', '<div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control>', '', '', function(opts) {
+riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="player-container"> <div class="scroll-container"><track-list tracks="{this.tracks}" click="{this.setSource}"></track-list></div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" audio="{this.audioSrc}"></track-control> </div>', '', '', function(opts) {
 
 
-	var self = this;
-	console.log(window.location.href);
-	var API = window.location.href.replace('/orion','/musico-api')
-	console.log(API);
+		const API = 'https://orion-server.herokuapp.com/api'
 
-	axios.get(API+'tracks/tracks.json').then(function(res){
-		self.tracks = res.data;
-		self.update();
-	});
+	this.updateDataList = function(dataList){
+		this.tracks = dataList;
+		this.update();
+	}.bind(this)
 
 	this.nextTrack = function(){
 		var len = this.tracks.length-1;
@@ -48,12 +45,36 @@ riot.tag2('index', '<div class="scroll-container"><track-list tracks="{this.trac
 	this.setSource = function(playIndex){
 		var track = this.tracks[playIndex];
 		if(track){
-			this.audioSrc=API.replace('musico-api','')+"/"+track.source;
-			this.trackname=track.name;
+			this.audioSrc=API+'/play?audioId='+track.videoId;
+			this.trackname=track.title;
 			this.playIndex = playIndex;
 		}
 		return;
 	}.bind(this)
+
+});
+var axios = require('axios');
+var debounce = require('lodash/fp/debounce');
+
+riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" placeholder="Search Here"> <div> </div>', '', '', function(opts) {
+
+    const API = 'https://orion-server.herokuapp.com/api';
+
+    this.searchTermChanged = function(event){
+        if(event.target.value.length<3){
+            return;
+        }
+
+        const url = API+'/search?searchTerm='+event.target.value
+
+        axios.get(url)
+        .then(data=>{
+            opts.updatedatalist(data.data)
+        })
+
+    }.bind(this)
+
+    this.apiCall = debounce(250)(this.searchTermChanged)
 
 });
 riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div class="album-details"> {opts.trackname||⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
@@ -136,7 +157,7 @@ riot.tag2('track-control', '<audio id="audio"></audio> <div class="player"> <div
 	}
 
 });
-riot.tag2('track-list', '<div class="list-container" each="{item,index in opts.tracks}"> <div class="list-item" onclick="{()=>changeTrack(index)}"> <div>{item.name}</div> <div class="secondary-text">{item.artist}</div> </div> </div>', '', '', function(opts) {
+riot.tag2('track-list', '<div class="list-container" each="{item,index in opts.tracks}"> <div class="list-item" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
 
 	this.changeTrack = function(index){
 		return opts.click(index);

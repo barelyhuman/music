@@ -5,12 +5,14 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.16.2",
+    "lodash": "^4.17.15",
     "riot": "^3.7.0"
   },
   "devDependencies": {
     "browserify": "^14.4.0",
     "parallelshell": "^3.0.1",
     "riotify": "^2.0.0",
+    "serve": "*",
     "watchify": "^3.9.0"
   },
   "scripts": {

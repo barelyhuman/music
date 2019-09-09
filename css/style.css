@@ -17,7 +17,7 @@ body {
 	align-items: center;
 }
 
-index {
+.player-container {
 	box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
 	background: white;
 	display: flex;
@@ -29,6 +29,7 @@ index {
 
 track-control {
 	box-sizing: border-box;
+	max-width:500px;
 	padding: 0px 50px;
 }
 
@@ -41,7 +42,7 @@ track-control {
 
 track-list {
 	margin-right:-30px;
-	height: 250px;
+	height: inherit;
 	overflow-x: hidden;
 	overflow-y: scroll;
 	width: 210px;
@@ -50,10 +51,14 @@ track-list {
 	justify-content: center;
 	font-family: "Rubik";
 	font-weight: 400;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 track-list .list-container {
-	height: 50px;
+	/* height: 50px; */
+	padding:10px 0px;
+	cursor: pointer;
 }
 
 track-list .list-container .list-item {
@@ -149,8 +154,31 @@ track-list .list-container .list-item:hover {
 	color: #333;
 }
 
+.flex{
+	display: flex;
+}
+
+searchbar{
+	display:flex;
+	padding:10px;
+}
+
+searchbar input{
+	color:#5c6b6b;
+    font-weight: 300;
+    box-sizing: border-box;
+    background-color: transparent;
+    border: none;
+	padding: 0;
+	width:100%;
+    font-size: 24px;
+    line-height: 40px;
+    outline: none;
+}
+
+
 @media (max-width: 767px) {
-	index {
+	.player-container {
 		margin: 0 auto;
 		min-height: 100vh;
 		width: 100vw;

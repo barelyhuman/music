@@ -1,32 +1,25 @@
 var axios = require('axios');
 
 <index>
-	<div class="scroll-container"><track-list tracks={this.tracks} click={this.setSource}></track-list></div>
+	<searchbar updatedatalist={this.updateDataList}></searchbar>
+	<div class="player-container">
+		<div class="scroll-container"><track-list tracks={this.tracks} click={this.setSource}></track-list></div>
 	<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} audio={this.audioSrc}></track-control>
+	</div>
 
 	<script>	
 
 	
 		//variables
-	
-
-	var self = this;	
-	console.log(window.location.href);
-	var API = window.location.href.replace('/orion','/musico-api')
-	console.log(API);
-
-	
-		//life-cycle handlers
-	
-
-	axios.get(API+'tracks/tracks.json').then(function(res){
-		self.tracks = res.data;
-		self.update();
-	});
+		const API = 'https://orion-server.herokuapp.com/api'
 
 	
 		//app handlers
 	
+	updateDataList(dataList){
+		this.tracks = dataList;
+		this.update();
+	}
 	
 	nextTrack(){
 		var len = this.tracks.length-1;
@@ -53,8 +46,8 @@ var axios = require('axios');
 	setSource(playIndex){
 		var track = this.tracks[playIndex];
 		if(track){
-			this.audioSrc=API.replace('musico-api','')+"/"+track.source;
-			this.trackname=track.name;	
+			this.audioSrc=API+'/play?audioId='+track.videoId;
+			this.trackname=track.title;	
 			this.playIndex = playIndex;		
 		}
 		return;
