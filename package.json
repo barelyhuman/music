@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "*",
     "lodash": "^4.17.15",
     "riot": "^3.7.0"
   },
