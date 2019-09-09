@@ -2,7 +2,7 @@ var axios = require('axios');
 var debounce = require('lodash/fp/debounce');
 
 <searchbar>
-    <input type="text" onkeyup={apiCall} placeholder="Search Here"> 
+    <input type="text" onkeyup={apiCall} onchange={apiCall} placeholder="Search Here"> 
 
     <div>
     

@@ -12358,7 +12358,7 @@ riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchba
 var axios = require('axios');
 var debounce = require('lodash/fp/debounce');
 
-riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" placeholder="Search Here"> <div> </div>', '', '', function(opts) {
+riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" onchange="{apiCall}" placeholder="Search Here"> <div> </div>', '', '', function(opts) {
 
     const API = 'https://orion-server.herokuapp.com/api';
 
