@@ -1,6 +1,6 @@
 <track-control class="track-control">
 
-	<audio id="audio" autoplay codecs="mp3"></audio>
+	<audio id="audio" autoplay type="audio/mpeg"></audio>
 	<div class="player">
 		<div class="album-details">
 		{opts.trackname || "Select a track..." }
@@ -35,6 +35,7 @@
 		if(opts.audio && opts.audio !== this.audio.src){
 			this.audio.src=opts.audio;
 			this.playing = true;
+			this.audio.load();
 			this.audio.play();
 		}
 
@@ -44,6 +45,11 @@
 			self.totalDuration = secsToTime(this.duration);
 			self.seekposition = 10;
 			self.update();	
+		}
+
+		this.audio.onerror = function(){
+			const {code,message}=self.audio.error;	
+			console.log(code+":"+message);
 		}
 
 		this.audio.onplaying=function(){

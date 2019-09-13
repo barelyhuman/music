@@ -46,8 +46,7 @@ var axios = require('axios');
 		if(track){
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;	
-			this.playIndex = playIndex;		
-			console.log(track);
+			this.playIndex = playIndex;
 			this.trackDuration = track.duration.seconds
 			this.update();
 		}

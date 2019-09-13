@@ -48,7 +48,6 @@ riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchba
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;
 			this.playIndex = playIndex;
-			console.log(track);
 			this.trackDuration = track.duration.seconds
 			this.update();
 		}
@@ -80,7 +79,7 @@ riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" onchange="{apiCal
     this.apiCall = debounce(250)(this.searchTermChanged)
 
 });
-riot.tag2('track-control', '<audio id="audio" autoplay codecs="mp3"></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
+riot.tag2('track-control', '<audio id="audio" autoplay type="audio/mpeg"></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Select a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control"', function(opts) {
 
 		var self = this;
 
@@ -93,6 +92,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay codecs="mp3"></audio> <di
 		if(opts.audio && opts.audio !== this.audio.src){
 			this.audio.src=opts.audio;
 			this.playing = true;
+			this.audio.load();
 			this.audio.play();
 		}
 
@@ -102,6 +102,11 @@ riot.tag2('track-control', '<audio id="audio" autoplay codecs="mp3"></audio> <di
 			self.totalDuration = secsToTime(this.duration);
 			self.seekposition = 10;
 			self.update();
+		}
+
+		this.audio.onerror = function(){
+			const {code,message}=self.audio.error;
+			console.log(code+":"+message);
 		}
 
 		this.audio.onplaying=function(){

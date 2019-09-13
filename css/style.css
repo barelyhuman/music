@@ -159,6 +159,8 @@ track-list .list-container .list-item:hover {
 }
 
 searchbar{
+	position: absolute;
+	top:20px;
 	display:flex;
 	padding:10px;
 }
