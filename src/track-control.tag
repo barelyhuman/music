@@ -1,6 +1,6 @@
 <track-control class="track-control">
 
-	<audio id="audio" autoplay type="audio/mpeg"></audio>
+	<audio id="audio" autoplay></audio>
 	<div class="player">
 		<div class="album-details">
 		{opts.trackname || "Select a track..." }
