@@ -12389,17 +12389,24 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 	this.on('update',function(){
 		if(opts.audio && opts.audio !== this.audio.src){
+			console.log(opts.audio);
 			this.audio.src=opts.audio;
 			this.playing = true;
-			this.audio.load();
 			this.audio.play();
 		}
 
 		this.audio.onloadedmetadata = function(){
-			this.duration = isNaN(this.duration)?opts.durationfromdb:this.duration;
-			self.totalDurationInSecs = this.duration;
-			self.totalDuration = secsToTime(this.duration);
-			self.seekposition = 10;
+			let durationToUse = 0;
+			if(!isNaN(this.duration)){
+				if(this.duration>opts.durationfromdb){
+					durationToUse = opts.durationfromdb;
+				}else{
+					durationToUse = this.duration;
+				}
+			}
+
+			self.totalDurationInSecs = durationToUse;
+			self.totalDuration = secsToTime(durationToUse);
 			self.update();
 		}
 
