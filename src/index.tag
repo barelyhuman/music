@@ -3,15 +3,17 @@ var axios = require('axios');
 <index>
 	<searchbar updatedatalist={this.updateDataList}></searchbar>
 	<div class="player-container">
-		<div class="scroll-container"><track-list tracks={this.tracks} click={this.setSource}></track-list></div>
-	<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
+		<div class="scroll-container">
+			<track-list tracks={this.tracks} click={this.setSource}></track-list>
+		</div>
+		<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
 	</div>
 
 	<script>	
 
 	
 	//variables
-	const API = 'https://orion-server.herokuapp.com/api'
+	const API = "https://orion-server.herokuapp.com/api"
 
 	//app handlers
 	
