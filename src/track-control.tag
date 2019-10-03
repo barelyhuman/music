@@ -3,7 +3,7 @@
 	<audio id="audio" autoplay></audio>
 	<div class="player">
 		<div class="album-details">
-		{opts.trackname || "Select a track..." }
+		{opts.trackname || "Add a track..." }
 		</div>
 		<div class="player-controls">
 			<div class="seek-bar">
