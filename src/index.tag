@@ -8,12 +8,12 @@ var axios = require('axios');
 		</div>
 		<div class="search-tab tab-content" show={tabs.search}>	
 		<searchbar updatedatalist={this.updateDataList}></searchbar>
-		<div class="scroll-container max-height-210-px">
+		<div class="scroll-container max-height-210-px mobile-max-height-80vh">
 		<track-list class="full-width" tracks={this.searchedTracks} click={this.addToTrackList}></track-list>
 		</div>
 		</div>
 		<div class="player-tab tab-content flex" show={tabs.player}>
-		<div class="scroll-container">
+		<div class="scroll-container mobile-max-height-45vh">
 			<track-list tracks={this.tracks} click={this.setSource}></track-list>
 		</div>
 		<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
