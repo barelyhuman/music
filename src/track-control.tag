@@ -32,8 +32,7 @@
 	});
 
 	this.on('update',function(){
-		if(opts.audio && opts.audio !== this.audio.src){
-			console.log(opts.audio);			
+		if(opts.audio && opts.audio !== this.audio.src){		
 			this.audio.src=opts.audio;
 			this.playing = true;
 			this.audio.play();

@@ -11,6 +11,11 @@ var debounce = require('lodash/fp/debounce');
     const API = 'https://orion-server.herokuapp.com/api';
 
     searchTermChanged(event){
+
+        if(!event.target.value){
+            opts.updatedatalist([]);
+        }
+
         if(event.target.value.length<3){
             return;
         }

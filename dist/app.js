@@ -12309,14 +12309,46 @@ process.umask = function() { return 0; };
 })(function(riot, require, exports, module) {
 var axios = require('axios');
 
-riot.tag2('index', '<searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="player-container"> <div class="scroll-container"> <track-list tracks="{this.tracks}" click="{this.setSource}"></track-list> </div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div>', '', '', function(opts) {
+riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <div class="tab-item hover-btn cursor-pointer" onclick="{showSearchTab}"><i class="typcn typcn-zoom font-25"></i></div> <div class="tab-item hover-btn cursor-pointer" onclick="{showPlayerTab}"><i class="typcn typcn-notes font-25"></i></div> </div> <div class="search-tab tab-content" show="{tabs.search}"> <searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="scroll-container max-height-210-px"> <track-list class="full-width" tracks="{this.searchedTracks}" click="{this.addToTrackList}"></track-list> </div> </div> <div class="player-tab tab-content flex" show="{tabs.player}"> <div class="scroll-container"> <track-list tracks="{this.tracks}" click="{this.setSource}"></track-list> </div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div> </div>', '', '', function(opts) {
 
 
 	const API = "https://orion-server.herokuapp.com/api"
+	this.tabs = {
+		player:true,
+		search:false
+	}
 
 	this.updateDataList = function(dataList){
-		this.tracks = dataList;
+		this.searchedTracks = dataList;
 		this.update();
+	}.bind(this)
+
+	this.addToTrackList = function(playIndex){
+		if(!this.tracks || !this.tracks.length){
+			this.tracks = [];
+		}
+		this.tracks.push(this.searchedTracks[playIndex]);
+
+		this.update();
+		if(this.tracks.length === 1){
+			this.setSource(0);
+		}
+	}.bind(this)
+
+	this.showTab = function(tabKey){
+		Object.keys(this.tabs).forEach(key=>{
+			this.tabs[key]=false;
+		});
+
+		this.tabs[tabKey]=true;
+	}.bind(this)
+
+	this.showSearchTab = function(){
+		this.showTab('search');
+	}.bind(this)
+
+	this.showPlayerTab = function(){
+		this.showTab('player');
 	}.bind(this)
 
 	this.nextTrack = function(){
@@ -12362,6 +12394,11 @@ riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" onchange="{apiCal
     const API = 'https://orion-server.herokuapp.com/api';
 
     this.searchTermChanged = function(event){
+
+        if(!event.target.value){
+            opts.updatedatalist([]);
+        }
+
         if(event.target.value.length<3){
             return;
         }
@@ -12389,7 +12426,6 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 	this.on('update',function(){
 		if(opts.audio && opts.audio !== this.audio.src){
-			console.log(opts.audio);
 			this.audio.src=opts.audio;
 			this.playing = true;
 			this.audio.play();
@@ -12471,7 +12507,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 	}
 
 });
-riot.tag2('track-list', '<div class="list-container" each="{item,index in opts.tracks}"> <div class="list-item" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
+riot.tag2('track-list', '<div class="list-container"> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
 
 	this.changeTrack = function(index){
 		return opts.click(index);
