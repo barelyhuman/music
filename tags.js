@@ -129,7 +129,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 		if(opts.audio && opts.audio !== this.audio.src){
 			this.audio.src=opts.audio;
 			this.playing = true;
-			this.audio.play();
+			this.audio.load();
 		}
 
 		this.audio.onloadedmetadata = function(){
@@ -144,6 +144,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 			self.totalDurationInSecs = durationToUse;
 			self.totalDuration = secsToTime(durationToUse);
+			self.audio.play();
 			self.update();
 		}
 
@@ -169,6 +170,9 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 		this.audio.onended = function(){
 			self.nextTrack();
 			self.audio.src=opts.audio;
+			self.update();
+			self.audio.load();
+			self.audio.play();
 		}
 
 	});
