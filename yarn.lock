@@ -3091,6 +3091,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+toastify-js@^1.6.1:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/toastify-js/-/toastify-js-1.6.1.tgz#2ec20654925d6f83f935d5a6907c146e6bcb67d6"
+  integrity sha512-yosiXPEdr3B9KL1rF7M/IMdw8d8Z69UJe2JsvxbfdpaL2/olqSB8tvp7/N6gkT9G46y6nqR2e62CCnf0LxeIBQ==
+
 tree-kill@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/tree-kill/-/tree-kill-1.2.1.tgz#5398f374e2f292b9dcc7b2e71e30a5c3bb6c743a"
