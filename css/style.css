@@ -234,6 +234,7 @@ searchbar input{
 		height:100vh;
 		width: 100vw;
 		border:none;
+		border-radius:0;
 		/* flex-wrap: wrap; */
 	}
 
