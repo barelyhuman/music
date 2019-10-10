@@ -12650,7 +12650,7 @@ process.umask = function() { return 0; };
 var axios = require('axios');
 var Toastify = require('toastify-js');
 
-riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <div class="tab-item cursor-pointer" onclick="{showSearchTab}"><i class="typcn typcn-zoom font-25"></i></div> <div class="tab-item cursor-pointer" onclick="{showPlayerTab}"><i class="typcn typcn-notes font-25"></i></div> </div> <div class="search-tab tab-content" show="{tabs.search}"> <searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="scroll-container max-height-210-px mobile-max-height-80vh"> <track-list class="full-width" tracks="{this.searchedTracks}" click="{this.addToTrackList}"></track-list> </div> </div> <div class="player-tab tab-content flex" show="{tabs.player}"> <div class="scroll-container mobile-max-height-45vh"> <track-list tracks="{this.tracks}" click="{this.setSource}"></track-list> </div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div> </div>', '', '', function(opts) {
+riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <div class="tab-item cursor-pointer" onclick="{showSearchTab}"><i class="typcn typcn-zoom font-25"></i></div> <div class="tab-item cursor-pointer" onclick="{showPlayerTab}"><i class="typcn typcn-notes font-25"></i></div> </div> <div class="search-tab tab-content" show="{tabs.search}"> <searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="scroll-container max-height-210-px mobile-max-height-80vh"> <track-list class="full-width" tracks="{this.searchedTracks}" click="{this.addToTrackList}"></track-list> </div> </div> <div class="player-tab tab-content flex" show="{tabs.player}"> <div class="scroll-container mobile-max-height-45vh"> <track-list tracks="{this.tracks}" click="{this.setSource}" placeholder="Search tracks to add them here"></track-list> </div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div> </div>', '', '', function(opts) {
 
 
 	const API = "https://orion-server.herokuapp.com/api"
@@ -12658,6 +12658,8 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 		player:true,
 		search:false
 	}
+
+	this.tracks = [];
 
 	this.updateDataList = function(dataList){
 		this.searchedTracks = dataList;
@@ -12860,10 +12862,14 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 	}
 
 });
-riot.tag2('track-list', '<div class="list-container"> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
+riot.tag2('track-list', '<div class="list-container"> <div class="list-item placeholder" if="{showPlaceholder()}"> <div class="primary-item-text">{opts.placeholder}</div> </div> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
 
 	this.changeTrack = function(index){
 		return opts.click(index);
+	}
+
+	this.showPlaceholder = function(){
+		return (!opts.tracks || !opts.tracks.length) && opts.placeholder;
 	}
 
 });});

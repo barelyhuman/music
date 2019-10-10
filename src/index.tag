@@ -15,7 +15,7 @@ var Toastify = require('toastify-js');
 		</div>
 		<div class="player-tab tab-content flex" show={tabs.player}>
 		<div class="scroll-container mobile-max-height-45vh">
-			<track-list tracks={this.tracks} click={this.setSource}></track-list>
+			<track-list tracks={this.tracks} click={this.setSource} placeholder="Search tracks to add them here"></track-list>
 		</div>
 		<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
 		</div>
@@ -30,6 +30,8 @@ var Toastify = require('toastify-js');
 		player:true,
 		search:false
 	}
+
+	this.tracks = [];
 
 	//app handlers
 	

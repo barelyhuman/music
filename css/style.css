@@ -63,7 +63,6 @@ track-list {
 
 track-list .list-container {
 	padding:10px 0px;
-	cursor: pointer;
 }
 
 track-list .list-container .list-item {
@@ -75,6 +74,7 @@ track-list .list-container .list-item {
 	margin-bottom:12px;
 	line-height: 1.5em;
 	transition: 0.5s ease;
+	cursor: pointer;
 }
 track-list .list-container .list-item:hover {
 	color: #000;
@@ -224,6 +224,15 @@ searchbar input{
 .toast-class{
 	color:#fff !important;
 	font-family: 'Rubik';
+}
+
+
+.placeholder{
+	cursor: default !important;
+}
+
+.placeholder:hover{
+	pointer-events: none;
 }
 
 @media (max-width: 767px) {
