@@ -11,7 +11,7 @@ html {
 body {
 	min-width: 100%;
 	min-height: 100%;
-	background: #000;
+	background: #fff;
 	color:#fff;
 	display: flex;
 	justify-content: center;
@@ -20,6 +20,7 @@ body {
 
 .player-container {
 	box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.12);
+	border:1px solid black;
 	background: #fff;
 	display: flex;
 	color: #333;
@@ -28,6 +29,7 @@ body {
 	justify-content: space-around;
 	align-items: center;
 	border-radius: 5px;
+	overflow:hidden;
 }
 
 track-control {
@@ -162,14 +164,6 @@ track-list .list-container .list-item:hover {
 	display: flex;
 }
 
-.hover-btn{
-	color:#555;
-}
-
-.hover-btn:hover{
-	color:#000;
-}
-
 .font-25{
 	font-size: 25px;
 }
@@ -183,7 +177,8 @@ searchbar{
 
 searchbar input{
 	color:#000;
-    font-weight: 300;
+	font-weight: 300;
+	font-family: 'Rubik';
     box-sizing: border-box;
     background-color: transparent;
     border: none;
@@ -203,7 +198,9 @@ searchbar input{
 }
 
 .tabs{
-	border-bottom:1px solid #eee;
+	border:none;
+	background:#000;
+	color:#fff;
 	width:100%;
 	box-sizing: border-box;
 	padding:10px;
@@ -223,6 +220,10 @@ searchbar input{
 	max-height:210px;
 }
 
+.toast-class{
+	color:#fff !important;
+	font-family: 'Rubik';
+}
 
 @media (max-width: 767px) {
 	
@@ -231,6 +232,7 @@ searchbar input{
 		min-height: 100vh;
 		height:100vh;
 		width: 100vw;
+		border:none;
 		/* flex-wrap: wrap; */
 	}
 

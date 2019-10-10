@@ -1,10 +1,11 @@
 var axios = require('axios');
+var Toastify = require('toastify-js');
 
 <index>
 	<div class="player-container flex-col">
 		<div class="tabs">
-			<div class="tab-item hover-btn cursor-pointer" onclick={showSearchTab}><i class="typcn typcn-zoom font-25"></i></div>
-			<div class="tab-item hover-btn cursor-pointer" onclick={showPlayerTab}><i class="typcn typcn-notes font-25"></i></div>
+			<div class="tab-item cursor-pointer" onclick={showSearchTab}><i class="typcn typcn-zoom font-25"></i></div>
+			<div class="tab-item cursor-pointer" onclick={showPlayerTab}><i class="typcn typcn-notes font-25"></i></div>
 		</div>
 		<div class="search-tab tab-content" show={tabs.search}>	
 		<searchbar updatedatalist={this.updateDataList}></searchbar>
@@ -42,6 +43,15 @@ var axios = require('axios');
 			this.tracks = [];
 		}
 		this.tracks.push(this.searchedTracks[playIndex]);
+
+		Toastify({
+  			text: "Added to Track List",			
+			backgroundColor:"#000",
+			gravity:"bottom",
+			position:"right",
+			className:"toast-class"
+		}).showToast();
+
 
 		this.update();
 		if(this.tracks.length === 1){
