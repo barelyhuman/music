@@ -58,7 +58,7 @@ track-list {
 	font-family: "Rubik";
 	font-weight: 400;
 	text-overflow: ellipsis;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 }
 
 track-list .list-container {
@@ -67,11 +67,13 @@ track-list .list-container {
 }
 
 track-list .list-container .list-item {
-	height: 50px;
+	/* height: 50px; */
 	color:#555;
 	display: flex;
 	flex-direction: column;
 	padding: 0 16px;
+	margin-bottom:12px;
+	line-height: 1.5em;
 	transition: 0.5s ease;
 }
 track-list .list-container .list-item:hover {
@@ -103,8 +105,7 @@ track-list .list-container .list-item:hover {
 
 .player-controls .seek-bar {
 	height: 50px;
-	width: 100%;
-	max-width: 500px;
+	width: 300px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
