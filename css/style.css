@@ -33,16 +33,17 @@ body {
 }
 
 track-control {
-	box-sizing: border-box;
-	max-width:500px;
-	width:500px;
-	display: flex;
-	padding: 0px 50px;
+    box-sizing: border-box;
+    max-width: 500px;
+    width: 500px;
+    display: flex;
+    padding: 0px 50px;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .scroll-container{
 	max-height: 100%;
-	border-right: 1px solid rgba(0, 0, 0, 0.12);
 	overflow:hidden;
 }
 
@@ -200,8 +201,8 @@ searchbar input{
 
 .tabs{
 	border:none;
-	background:#000;
-	color:#fff;
+	background:#fff;
+	color:#000;
 	width:100%;
 	box-sizing: border-box;
 	padding:10px;
@@ -235,7 +236,7 @@ searchbar input{
 	pointer-events: none;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
 	
 	 .player-container {
 		margin: 0 auto;
@@ -279,10 +280,16 @@ searchbar input{
 		max-height:45vh;
 	}
 
+	.mobile-flex-align-self-center{
+		align-self: center;
+	}
+
+
 	track-control {
 		order: 1;
-		flex-direction: column;
-		/* max-height: 40%; */
-		width: 100%;
+    	align-items: center;
+    	flex-direction: column;
+    	/* max-height: 40%; */
+    	width: 100%;
 	}
 }

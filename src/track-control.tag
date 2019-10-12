@@ -1,4 +1,4 @@
-<track-control class="track-control">
+<track-control class="track-control mobile-flex-align-self-center">
 
 	<audio id="audio" autoplay></audio>
 	<div class="player">
