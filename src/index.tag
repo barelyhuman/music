@@ -106,6 +106,9 @@ var Toastify = require('toastify-js');
 			this.trackname=track.title;	
 			this.playIndex = playIndex;
 			this.trackDuration = track.duration.seconds
+
+			document.title = this.trackname;
+
 			this.update();
 		}
 		return;

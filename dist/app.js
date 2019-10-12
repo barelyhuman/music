@@ -12731,6 +12731,9 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 			this.trackname=track.title;
 			this.playIndex = playIndex;
 			this.trackDuration = track.duration.seconds
+
+			document.title = this.trackname;
+
 			this.update();
 		}
 		return;
