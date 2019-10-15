@@ -112,6 +112,8 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 	this.removeTrackClick = function(removalIndex){
 		this.tracks = this.tracks.filter((item,index)=>removalIndex!==index);
 
+		this.updateTrackList();
+
 		if(removalIndex === this.playIndex){
 			this.nextTrack();
 		}

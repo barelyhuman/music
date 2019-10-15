@@ -125,7 +125,9 @@ var Toastify = require('toastify-js');
 
 	removeTrackClick(removalIndex){
 		this.tracks = this.tracks.filter((item,index)=>removalIndex!==index);
-	
+
+		this.updateTrackList();
+
 		if(removalIndex === this.playIndex){
 			this.nextTrack();
 		}
