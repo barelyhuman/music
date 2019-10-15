@@ -7,7 +7,7 @@
 			<div class="primary-item-text">{item.title}</div>
 			<div class="secondary-text">
 			{item.author.name}
-				<span class="margin-left-sm danger-text font-size-14-px" onclick={()=>removeTrack(index)}>
+				<span class="margin-left-sm danger-text font-size-14-px" onclick={removeTrack}>
 					<small>Remove Track</small>
 				</span>
 			</div>
@@ -18,8 +18,9 @@
 		return opts.click(index);		
 	}
 
-	this.removeTrack = function(index){
-		return opts.removetrack(index);
+	this.removeTrack = function(e){
+		e.stopPropagation();
+		return opts.removetrack(e.item.index);
 	}
 
 	this.showPlaceholder = function(){

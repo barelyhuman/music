@@ -88,6 +88,7 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 	}.bind(this)
 
 	this.setSource = function(playIndex){
+
 		var track = this.tracks[playIndex];
 
 		if(track){
@@ -98,7 +99,7 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 			this.audioSrc = '';
 			this.trackname = 'Add a track...';
 			this.trackDuration = 0
-			console.log("-1 condition");
+
 		}
 
 		this.playIndex = playIndex;
@@ -110,12 +111,14 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 
 	this.removeTrackClick = function(removalIndex){
 		this.tracks = this.tracks.filter((item,index)=>removalIndex!==index);
-		if(removalIndex === this.playIndex && this.tracks[this.playIndex+1]){
-			this.setSource(this.playIndex+1);
-		}else if(!this.tracks.length){
+
+		if(removalIndex === this.playIndex){
+			this.nextTrack();
+		}
+		if(!this.tracks.length){
 			this.setSource(-1);
 		}
-		this.update();
+
 	}.bind(this)
 
 	this.updateTrackList = function(){
@@ -276,14 +279,15 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 	}
 
 });
-riot.tag2('track-list', '<div class="list-container"> <div class="list-item placeholder" if="{showPlaceholder()}"> <div class="primary-item-text">{opts.placeholder}</div> </div> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text"> {item.author.name} <span class="margin-left-sm danger-text font-size-14-px" onclick="{()=>removeTrack(index)}"> <small>Remove Track</small> </span> </div> </div> </div>', '', '', function(opts) {
+riot.tag2('track-list', '<div class="list-container"> <div class="list-item placeholder" if="{showPlaceholder()}"> <div class="primary-item-text">{opts.placeholder}</div> </div> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text"> {item.author.name} <span class="margin-left-sm danger-text font-size-14-px" onclick="{removeTrack}"> <small>Remove Track</small> </span> </div> </div> </div>', '', '', function(opts) {
 
 	this.changeTrack = function(index){
 		return opts.click(index);
 	}
 
-	this.removeTrack = function(index){
-		return opts.removetrack(index);
+	this.removeTrack = function(e){
+		e.stopPropagation();
+		return opts.removetrack(e.item.index);
 	}
 
 	this.showPlaceholder = function(){

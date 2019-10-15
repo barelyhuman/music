@@ -102,6 +102,7 @@ var Toastify = require('toastify-js');
 	}
 
 	setSource(playIndex){
+		
 		var track = this.tracks[playIndex];
 
 		if(track){
@@ -112,7 +113,7 @@ var Toastify = require('toastify-js');
 			this.audioSrc = '';
 			this.trackname = 'Add a track...';
 			this.trackDuration = 0
-			console.log("-1 condition");
+			
 		}
 
 		this.playIndex = playIndex;
@@ -124,12 +125,14 @@ var Toastify = require('toastify-js');
 
 	removeTrackClick(removalIndex){
 		this.tracks = this.tracks.filter((item,index)=>removalIndex!==index);
-		if(removalIndex === this.playIndex && this.tracks[this.playIndex+1]){
-			this.setSource(this.playIndex+1);
-		}else if(!this.tracks.length){
+	
+		if(removalIndex === this.playIndex){
+			this.nextTrack();
+		}
+		if(!this.tracks.length){
 			this.setSource(-1);
 		}
-		this.update();
+
 	}
 
 
