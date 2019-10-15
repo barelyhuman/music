@@ -32,6 +32,12 @@
 	});
 
 	this.on('update',function(){
+		if(opts.playindex === -1){
+			this.pause();
+			this.audio.src = "";
+			this.audio.currentTime = 0;
+		}
+
 		if(opts.audio && opts.audio !== this.audio.src){		
 			this.audio.src=opts.audio;
 			this.playing = true;

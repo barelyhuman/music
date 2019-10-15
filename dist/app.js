@@ -12650,7 +12650,7 @@ process.umask = function() { return 0; };
 var axios = require('axios');
 var Toastify = require('toastify-js');
 
-riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <div class="tab-item cursor-pointer" onclick="{showSearchTab}"><i class="typcn typcn-zoom font-25"></i></div> <div class="tab-item cursor-pointer" onclick="{showPlayerTab}"><i class="typcn typcn-notes font-25"></i></div> </div> <div class="search-tab tab-content" show="{tabs.search}"> <searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="scroll-container max-height-210-px mobile-max-height-80vh"> <track-list class="full-width" tracks="{this.searchedTracks}" click="{this.addToTrackList}"></track-list> </div> </div> <div class="player-tab tab-content flex" show="{tabs.player}"> <div class="scroll-container mobile-max-height-45vh"> <track-list tracks="{this.tracks}" click="{this.setSource}" placeholder="Search tracks to add them here"></track-list> </div> <track-control prevtrack="{this.prevTrack}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div> </div>', '', '', function(opts) {
+riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <div class="tab-item cursor-pointer" onclick="{showSearchTab}"><i class="typcn typcn-zoom font-25"></i></div> <div class="tab-item cursor-pointer" onclick="{showPlayerTab}"><i class="typcn typcn-notes font-25"></i></div> </div> <div class="search-tab tab-content" show="{tabs.search}"> <searchbar updatedatalist="{this.updateDataList}"></searchbar> <div class="scroll-container max-height-210-px mobile-max-height-80vh"> <selection-list class="full-width" tracks="{this.searchedTracks}" click="{this.addToTrackList}"></selection-list> </div> </div> <div class="player-tab tab-content flex" show="{tabs.player}"> <div class="scroll-container mobile-max-height-45vh"> <track-list tracks="{this.tracks}" click="{this.setSource}" removetrack="{this.removeTrackClick}" placeholder="Search tracks to add them here"></track-list> </div> <track-control prevtrack="{this.prevTrack}" playindex="{this.playIndex}" nexttrack="{this.nextTrack}" trackname="{this.trackname}" durationfromdb="{this.trackDuration}" audio="{this.audioSrc}"></track-control> </div> </div>', '', '', function(opts) {
 
 
 	const API = "https://orion-server.herokuapp.com/api"
@@ -12726,17 +12726,32 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 
 	this.setSource = function(playIndex){
 		var track = this.tracks[playIndex];
+
 		if(track){
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;
-			this.playIndex = playIndex;
 			this.trackDuration = track.duration.seconds
-
-			document.title = this.trackname;
-
-			this.update();
+		}else if (playIndex === -1 ){
+			this.audioSrc = '';
+			this.trackname = 'Add a track...';
+			this.trackDuration = 0
+			console.log("-1 condition");
 		}
+
+		this.playIndex = playIndex;
+		document.title = this.trackname;
+		this.update();
 		return;
+	}.bind(this)
+
+	this.removeTrackClick = function(removalIndex){
+		this.tracks = this.tracks.filter((item,index)=>removalIndex!==index);
+		if(removalIndex === this.playIndex && this.tracks[this.playIndex+1]){
+			this.setSource(this.playIndex+1);
+		}else if(!this.tracks.length){
+			this.setSource(-1);
+		}
+		this.update();
 	}.bind(this)
 
 });
@@ -12769,6 +12784,17 @@ riot.tag2('searchbar', '<input type="text" onkeyup="{apiCall}" onchange="{apiCal
     this.apiCall = debounce(250)(this.searchTermChanged)
 
 });
+riot.tag2('selection-list', '<div class="list-container"> <div class="list-item placeholder" if="{showPlaceholder()}"> <div class="primary-item-text">{opts.placeholder}</div> </div> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
+
+	this.changeTrack = function(index){
+		return opts.click(index);
+	}
+
+	this.showPlaceholder = function(){
+		return (!opts.tracks || !opts.tracks.length) && opts.placeholder;
+	}
+
+});
 riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Add a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control mobile-flex-align-self-center"', function(opts) {
 
 		var self = this;
@@ -12779,6 +12805,12 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 	});
 
 	this.on('update',function(){
+		if(opts.playindex === -1){
+			this.pause();
+			this.audio.src = "";
+			this.audio.currentTime = 0;
+		}
+
 		if(opts.audio && opts.audio !== this.audio.src){
 			this.audio.src=opts.audio;
 			this.playing = true;
@@ -12865,10 +12897,14 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 	}
 
 });
-riot.tag2('track-list', '<div class="list-container"> <div class="list-item placeholder" if="{showPlaceholder()}"> <div class="primary-item-text">{opts.placeholder}</div> </div> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text">{item.author.name}</div> </div> </div>', '', '', function(opts) {
+riot.tag2('track-list', '<div class="list-container"> <div class="list-item placeholder" if="{showPlaceholder()}"> <div class="primary-item-text">{opts.placeholder}</div> </div> <div class="list-item" each="{item,index in opts.tracks}" onclick="{()=>changeTrack(index)}"> <div class="primary-item-text">{item.title}</div> <div class="secondary-text"> {item.author.name} <span class="margin-left-sm danger-text font-size-14-px" onclick="{()=>removeTrack(index)}"> <small>Remove Track</small> </span> </div> </div> </div>', '', '', function(opts) {
 
 	this.changeTrack = function(index){
 		return opts.click(index);
+	}
+
+	this.removeTrack = function(index){
+		return opts.removetrack(index);
 	}
 
 	this.showPlaceholder = function(){

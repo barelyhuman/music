@@ -10,14 +10,14 @@ var Toastify = require('toastify-js');
 		<div class="search-tab tab-content" show={tabs.search}>	
 		<searchbar updatedatalist={this.updateDataList}></searchbar>
 		<div class="scroll-container max-height-210-px mobile-max-height-80vh">
-		<track-list class="full-width" tracks={this.searchedTracks} click={this.addToTrackList}></track-list>
+		<selection-list class="full-width" tracks={this.searchedTracks} click={this.addToTrackList}></selection-list>
 		</div>
 		</div>
 		<div class="player-tab tab-content flex" show={tabs.player}>
 		<div class="scroll-container mobile-max-height-45vh">
-			<track-list tracks={this.tracks} click={this.setSource} placeholder="Search tracks to add them here"></track-list>
+			<track-list tracks={this.tracks} click={this.setSource} removetrack={this.removeTrackClick} placeholder="Search tracks to add them here"></track-list>
 		</div>
-		<track-control prevtrack={this.prevTrack} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
+		<track-control prevtrack={this.prevTrack} playindex={this.playIndex} nexttrack={this.nextTrack} trackname={this.trackname} durationfromdb={this.trackDuration} audio={this.audioSrc}></track-control>
 		</div>
 	</div>
 
@@ -101,17 +101,32 @@ var Toastify = require('toastify-js');
 
 	setSource(playIndex){
 		var track = this.tracks[playIndex];
+
 		if(track){
 			this.audioSrc=API+'/play?audioId='+track.videoId;
 			this.trackname=track.title;	
-			this.playIndex = playIndex;
 			this.trackDuration = track.duration.seconds
-
-			document.title = this.trackname;
-
-			this.update();
+		}else if (playIndex === -1 ){
+			this.audioSrc = '';
+			this.trackname = 'Add a track...';
+			this.trackDuration = 0
+			console.log("-1 condition");
 		}
+
+		this.playIndex = playIndex;
+		document.title = this.trackname;
+		this.update();
 		return;
+	}
+
+	removeTrackClick(removalIndex){
+		this.tracks = this.tracks.filter((item,index)=>removalIndex!==index);
+		if(removalIndex === this.playIndex && this.tracks[this.playIndex+1]){
+			this.setSource(this.playIndex+1);
+		}else if(!this.tracks.length){
+			this.setSource(-1);
+		}
+		this.update();
 	}
 	
 	</script>
