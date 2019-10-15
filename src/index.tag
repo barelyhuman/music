@@ -119,7 +119,6 @@ var Toastify = require('toastify-js');
 		this.playIndex = playIndex;
 		document.title = this.trackname;
 		this.update();
-		this.updateTrackList();
 		return;
 	}
 
@@ -151,7 +150,7 @@ var Toastify = require('toastify-js');
 		}
 	}
 
-	this.readTrackList()
+	this.readTrackList();
 	
 	</script>
 	

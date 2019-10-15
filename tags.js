@@ -105,7 +105,6 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 		this.playIndex = playIndex;
 		document.title = this.trackname;
 		this.update();
-		this.updateTrackList();
 		return;
 	}.bind(this)
 
@@ -136,7 +135,7 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 		}
 	}.bind(this)
 
-	this.readTrackList()
+	this.readTrackList();
 
 });
 var axios = require('axios');
