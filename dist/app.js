@@ -12654,6 +12654,7 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 
 
 	const API = "https://orion-server.herokuapp.com/api"
+
 	this.tabs = {
 		player:true,
 		search:false
@@ -12681,6 +12682,7 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 		}).showToast();
 
 		this.update();
+		this.updateTrackList();
 		if(this.tracks.length === 1){
 			this.setSource(0);
 		}
@@ -12741,6 +12743,7 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 		this.playIndex = playIndex;
 		document.title = this.trackname;
 		this.update();
+		this.updateTrackList();
 		return;
 	}.bind(this)
 
@@ -12753,6 +12756,21 @@ riot.tag2('index', '<div class="player-container flex-col"> <div class="tabs"> <
 		}
 		this.update();
 	}.bind(this)
+
+	this.updateTrackList = function(){
+		window.localStorage.setItem('tracks',JSON.stringify(this.tracks));
+	}.bind(this)
+
+	this.readTrackList = function(){
+		const tracks = JSON.parse(window.localStorage.getItem('tracks'));
+
+		if(tracks){
+			this.tracks = tracks;
+			this.update();
+		}
+	}.bind(this)
+
+	this.readTrackList()
 
 });
 var axios = require('axios');

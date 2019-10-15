@@ -26,6 +26,7 @@ var Toastify = require('toastify-js');
 	
 	//variables
 	const API = "https://orion-server.herokuapp.com/api"
+	
 	this.tabs = {
 		player:true,
 		search:false
@@ -56,6 +57,7 @@ var Toastify = require('toastify-js');
 
 
 		this.update();
+		this.updateTrackList();
 		if(this.tracks.length === 1){
 			this.setSource(0);
 		}
@@ -116,6 +118,7 @@ var Toastify = require('toastify-js');
 		this.playIndex = playIndex;
 		document.title = this.trackname;
 		this.update();
+		this.updateTrackList();
 		return;
 	}
 
@@ -128,6 +131,22 @@ var Toastify = require('toastify-js');
 		}
 		this.update();
 	}
+
+
+	updateTrackList(){
+		window.localStorage.setItem('tracks',JSON.stringify(this.tracks));
+	}
+
+	readTrackList(){
+		const tracks = JSON.parse(window.localStorage.getItem('tracks'));
+
+		if(tracks){
+			this.tracks = tracks;
+			this.update();
+		}
+	}
+
+	this.readTrackList()
 	
 	</script>
 	
