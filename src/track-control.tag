@@ -1,3 +1,6 @@
+var NoSleep = require('nosleep.js'); 
+var noSleep = new NoSleep();
+
 <track-control class="track-control mobile-flex-align-self-center">
 
 	<audio id="audio" autoplay></audio>
@@ -67,6 +70,7 @@
 
 		this.audio.onplaying=function(){
 			self.playing = true;
+			noSleep.enable();
 		}
 
 		this.audio.ontimeupdate = function(){
@@ -77,6 +81,7 @@
 
 		this.audio.onpause=function(){
 			self.playing = false;
+			noSleep.disable();
 		}
 
 		this.audio.onended = function(){

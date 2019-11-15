@@ -178,6 +178,9 @@ riot.tag2('selection-list', '<div class="list-container"> <div class="list-item 
 	}
 
 });
+var NoSleep = require('nosleep.js'); 
+var noSleep = new NoSleep();
+
 riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="player"> <div class="album-details"> {opts.trackname || ⁗Add a track...⁗} </div> <div class="player-controls"> <div class="seek-bar"> <div class="timestamp">{this.playedTime || ⁗00.00.00⁗}</div> <div class="seek"> <div id="progress"></div> </div> <div class="timestamp">{this.totalDuration || ⁗00.00.00⁗}</div> </div> <div class="player-buttons"> <div onclick="{prevTrack}"><i class="typcn typcn-media-rewind"></i></div> <div style="font-size:40px" onclick="{togglePlay}"><i class="{this.playing?\'typcn typcn-media-pause-outline active-btn\':\'typcn typcn-media-play-outline\'}"></i></div> <div onclick="{nextTrack}"><i class="typcn typcn-media-fast-forward"></i></div> </div> <div class="volume-bar"></div> </div> </div>', '', 'class="track-control mobile-flex-align-self-center"', function(opts) {
 
 		var self = this;
@@ -223,6 +226,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 		this.audio.onplaying=function(){
 			self.playing = true;
+			noSleep.enable();
 		}
 
 		this.audio.ontimeupdate = function(){
@@ -233,6 +237,7 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 
 		this.audio.onpause=function(){
 			self.playing = false;
+			noSleep.disable();
 		}
 
 		this.audio.onended = function(){

@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "*",
     "lodash": "^4.17.15",
+    "nosleep.js": "^0.9.0",
     "riot": "^3.7.0",
     "toastify-js": "^1.6.1"
   },
