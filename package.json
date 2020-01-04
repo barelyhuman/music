@@ -15,9 +15,11 @@
     "concurrently": "*",
     "riotify": "^2.0.0",
     "serve": "*",
-    "watchify": "^3.9.0"
+    "watchify": "^3.9.0",
+    "yarn": "^1.21.1"
   },
   "scripts": {
+    "prestart": "npm i",
     "watch": "watchify app.js -t riotify -o dist/app.js -v",
     "compile": "riot -m -w src tags.js",
     "serve": "serve .",

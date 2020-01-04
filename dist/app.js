@@ -12301,7 +12301,7 @@ process.umask = function() { return 0; };
 
 },{}],242:[function(require,module,exports){
 /*!
- * Toastify js 1.6.1
+ * Toastify js 1.6.2
  * https://github.com/apvarun/toastify-js
  * @license MIT licensed
  *
@@ -12320,7 +12320,7 @@ process.umask = function() { return 0; };
       return new Toastify.lib.init(options);
     },
     // Library version
-    version = "1.6.1";
+    version = "1.6.2";
 
   // Defining the prototype of the object
   Toastify.lib = Toastify.prototype = {
@@ -12355,6 +12355,7 @@ process.umask = function() { return 0; };
       this.options.avatar = options.avatar || ""; // img element src - url or a path
       this.options.className = options.className || ""; // additional class names for the toast
       this.options.stopOnFocus = options.stopOnFocus === undefined? true: options.stopOnFocus; // stop timeout on focus
+      this.options.onClick = options.onClick; // Callback after click
 
       // Returning the current object for chaining functions
       return this;
@@ -12423,8 +12424,8 @@ process.umask = function() { return 0; };
           "click",
           function(event) {
             event.stopPropagation();
-            this.removeElement(event.target.parentElement);
-            window.clearTimeout(event.target.parentElement.timeOutValue);
+            this.removeElement(this.toastElement);
+            window.clearTimeout(this.toastElement.timeOutValue);
           }.bind(this)
         );
 
@@ -12478,6 +12479,16 @@ process.umask = function() { return 0; };
             } else {
               window.location = this.options.destination;
             }
+          }.bind(this)
+        );
+      }
+
+      if (typeof this.options.onClick === "function" && typeof this.options.destination === "undefined") {
+        divElement.addEventListener(
+          "click",
+          function(event) {
+            event.stopPropagation();
+            this.options.onClick();            
           }.bind(this)
         );
       }
@@ -12862,8 +12873,13 @@ riot.tag2('track-control', '<audio id="audio" autoplay></audio> <div class="play
 		}
 
 		this.audio.onerror = function(){
-			const {code,message}=self.audio.error;
-			console.log(code+":"+message);
+			Toastify({
+				text: "Error Playing Track, kindly refresh or choose a different link",
+				backgroundColor:"#ee3f40",
+				gravity:"bottom",
+				position:"right",
+				className:"toast-class"
+			}).showToast();
 		}
 
 		this.audio.onplaying=function(){

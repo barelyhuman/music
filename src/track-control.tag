@@ -64,8 +64,13 @@ var noSleep = new NoSleep();
 		}
 
 		this.audio.onerror = function(){
-			const {code,message}=self.audio.error;	
-			console.log(code+":"+message);
+			Toastify({
+				text: "Error Playing Track, kindly refresh or choose a different link",			
+				backgroundColor:"#ee3f40",
+				gravity:"bottom",
+				position:"right",
+				className:"toast-class"
+			}).showToast();
 		}
 
 		this.audio.onplaying=function(){
