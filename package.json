@@ -20,9 +20,12 @@
   },
   "scripts": {
     "prestart": "npm i",
-    "watch": "watchify app.js -t riotify -o dist/app.js -v",
-    "compile": "riot -m -w src tags.js",
+    "watch": "watchify app.js -t riotify -o app.bundle.js -v",
+    "build": "sh build.sh",
+    "browserify": "browserify app.js -t riotify -o public/app.bundle.js",
+    "riot:watch": "riot -m -w src public/tags.js",
+    "compile": "riot -m src tags.js",
     "serve": "serve .",
-    "start": "concurrently 'yarn serve' 'yarn compile' 'yarn watch'"
+    "start": "concurrently 'yarn serve' 'yarn riot:watch' 'yarn watch'"
   }
 }
