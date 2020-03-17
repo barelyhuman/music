@@ -16,7 +16,7 @@
     "riotify": "^2.0.0",
     "serve": "*",
     "watchify": "^3.9.0",
-    "yarn": "^1.21.1"
+    "yarn": "^1.22.0"
   },
   "scripts": {
     "prestart": "npm i",
