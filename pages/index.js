@@ -104,7 +104,7 @@ export default function Home() {
   return (
     <div>
       <div className="music-card ">
-        <div class="flex flex-col just-center align-center">
+        <div className="flex flex-col just-center align-center">
           <div className="track-title">{getTrackName()}</div>
           <Spacer y={3} />
           <div className="flex just-center align-center">
