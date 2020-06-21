@@ -1,31 +1,35 @@
 {
   "name": "orion",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "fix": "prettier --write ."
+  },
   "dependencies": {
-    "axios": "*",
-    "lodash": "^4.17.15",
-    "nosleep.js": "^0.9.0",
-    "riot": "^3.7.0",
-    "toastify-js": "^1.6.1"
+    "lodash.debounce": "^4.0.8",
+    "next": "9.4.4",
+    "nprogress": "^0.2.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "toastify-js": "^1.8.0"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "devDependencies": {
-    "browserify": "^14.4.0",
-    "concurrently": "*",
-    "riotify": "^2.0.0",
-    "serve": "*",
-    "watchify": "^3.9.0",
-    "yarn": "^1.22.0"
-  },
-  "scripts": {
-    "prestart": "npm i",
-    "watch": "watchify app.js -t riotify -o app.bundle.js -v",
-    "build": "sh build.sh",
-    "browserify": "browserify app.js -t riotify -o public/app.bundle.js",
-    "riot:watch": "riot -m -w src public/tags.js",
-    "compile": "riot -m src tags.js",
-    "serve": "serve .",
-    "start": "concurrently 'yarn serve' 'yarn riot:watch' 'yarn watch'"
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "prettier": "^2.0.5"
   }
 }
