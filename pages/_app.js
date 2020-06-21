@@ -11,6 +11,7 @@ function App({ Component, pageProps }) {
       <style jsx global>
         {`
           body {
+            background: #fff;
             font-family: 'Inter', sans-serif;
           }
 
