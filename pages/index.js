@@ -30,7 +30,7 @@ export default function Home() {
 
   function checkServer() {
     progressStart()
-    fetcher('/ping')
+    fetcher('/api/ping')
       .then(() => {
         progressDone()
         setLoading(false)
