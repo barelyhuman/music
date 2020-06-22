@@ -101,6 +101,12 @@ export default function Home() {
     return <></>
   }
 
+  function refreshList(removed = false) {
+    if (removed) {
+      playMusic()
+    }
+  }
+
   return (
     <div>
       <div className="music-card ">
@@ -147,6 +153,7 @@ export default function Home() {
         <MusicSearchModal
           onSelect={playSelected}
           open={modalOpen}
+          refresh={refreshList}
           onClose={closeListModal}
         />
       ) : null}
