@@ -86,6 +86,12 @@ export default function Home() {
 
   function playByDirection(dir) {
     const playlist = getTracks()
+    
+    if(playIndex === 0 && playIndex+dir>playlist.length-1){
+      playMusic();
+      return;
+    }
+    
     setPlayIndex((oldState) => {
       if (oldState + dir >= playlist.length) {
         return 0
