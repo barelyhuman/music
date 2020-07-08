@@ -1,4 +1,7 @@
 import { useState, useEffect, useReducer, useRef } from 'react'
+
+import Mousetrap from 'mousetrap'
+
 import fetcher, { baseUrl } from 'lib/api'
 import Card from 'lib/components/card'
 import {
@@ -20,6 +23,7 @@ export default function Home() {
 
   useEffect(() => {
     checkServer()
+    setupKeybinds()
   }, [])
 
   useEffect(() => {
@@ -27,6 +31,22 @@ export default function Home() {
       playMusic()
     }
   }, [playIndex])
+
+  function setupKeybinds() {
+    Mousetrap.bind(['command+k', 'ctrl+k'], () => {
+      openListModal()
+      return false
+    })
+    Mousetrap.bind(['space'], () => {
+      toggleMusic()
+      return false
+    })
+
+    Mousetrap.bind(['esc'], () => {
+      closeListModal()
+      return false
+    })
+  }
 
   function checkServer() {
     progressStart()
@@ -40,6 +60,14 @@ export default function Home() {
         console.log(err)
         setLoading(false)
       })
+  }
+
+  function toggleMusic() {
+    if (!audioRef.current.paused) {
+      pauseMusic()
+    } else {
+      playMusic()
+    }
   }
 
   function playMusic() {
@@ -70,6 +98,15 @@ export default function Home() {
     setModalOpen(false)
   }
 
+  function toggleListModal() {
+    debugger
+    if (modalOpen) {
+      closeListModal()
+    } else {
+      openListModal()
+    }
+  }
+
   function playSelected(trackItem) {
     const playlist = getTracks()
     playlist.forEach((track, idx) => {
@@ -86,12 +123,12 @@ export default function Home() {
 
   function playByDirection(dir) {
     const playlist = getTracks()
-    
-    if(playIndex === 0 && playIndex+dir>playlist.length-1){
-      playMusic();
-      return;
+
+    if (playIndex === 0 && playIndex + dir > playlist.length - 1) {
+      playMusic()
+      return
     }
-    
+
     setPlayIndex((oldState) => {
       if (oldState + dir >= playlist.length) {
         return 0
@@ -152,6 +189,12 @@ export default function Home() {
               </div>
             </Card>
           </div>
+          <Spacer y={1} />
+          <div className="secondary-text">
+            [ ⌘/ctrl + k ] - search | playlist
+          </div>
+          <Spacer y={1} />
+          <div className="secondary-text">[ space ] - play | pause</div>
         </div>
       </div>
 
@@ -204,6 +247,11 @@ export default function Home() {
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+
+          .secondary-text {
+            color: #999;
+            font-size: 12px;
           }
         `}
       </style>

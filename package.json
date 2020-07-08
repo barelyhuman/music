@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "lodash.debounce": "^4.0.8",
+    "mousetrap": "^1.6.5",
     "next": "9.4.4",
     "nprogress": "^0.2.0",
     "react": "16.13.1",
