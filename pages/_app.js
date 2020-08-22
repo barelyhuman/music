@@ -13,6 +13,7 @@ function App({ Component, pageProps }) {
           body {
             background: #fff;
             font-family: 'Inter', sans-serif;
+            overflow: hidden;
           }
 
           .cursor-pointer {
