@@ -20,6 +20,9 @@ export default function Home() {
   const [modalOpen, setModalOpen] = useState(false)
   const [playIndex, setPlayIndex] = useState(0)
   const audioRef = useRef(null)
+  const maxVolume = 1.0
+  const minVolume = 0.0
+  const volumeTicker = 0.1
 
   useEffect(() => {
     checkServer()
@@ -46,6 +49,29 @@ export default function Home() {
       closeListModal()
       return false
     })
+
+    Mousetrap.bind(['up'], () => {
+      increaseVolume()
+    })
+    Mousetrap.bind(['down'], () => {
+      decreaseVolume()
+    })
+  }
+
+  function increaseVolume() {
+    if (audioRef.current.volume + volumeTicker > maxVolume) {
+      audioRef.current.volume = maxVolume
+      return
+    }
+    audioRef.current.volume += volumeTicker
+  }
+
+  function decreaseVolume() {
+    if (audioRef.current.volume - volumeTicker <= minVolume) {
+      audioRef.current.volume = minVolume
+      return
+    }
+    audioRef.current.volume -= volumeTicker
   }
 
   function checkServer() {
@@ -195,6 +221,8 @@ export default function Home() {
           </div>
           <Spacer y={1} />
           <div className="secondary-text">[ space ] - play | pause</div>
+          <Spacer y={1} />
+          <div className="secondary-text">[ &uarr;/&darr; ] - volume</div>
         </div>
       </div>
 
