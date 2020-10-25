@@ -125,7 +125,6 @@ export default function Home() {
   }
 
   function toggleListModal() {
-    debugger
     if (modalOpen) {
       closeListModal()
     } else {
@@ -171,8 +170,11 @@ export default function Home() {
   }
 
   function refreshList(removed = false) {
-    if (removed) {
+    const playlist = getTracks()
+    if (removed && playlist.length) {
       playMusic()
+    } else {
+      pauseMusic()
     }
   }
 
