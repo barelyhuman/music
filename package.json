@@ -9,12 +9,15 @@
     "fix": "prettier --write ."
   },
   "dependencies": {
+    "@barelyreaper/themer": "^0.0.10",
+    "feather-icons": "^4.28.0",
     "lodash.debounce": "^4.0.8",
     "mousetrap": "^1.6.5",
-    "next": "^9.5.5",
+    "next": "^10.0.8",
     "nprogress": "^0.2.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-feather": "^2.0.9",
     "toastify-js": "^1.8.0"
   },
   "lint-staged": {

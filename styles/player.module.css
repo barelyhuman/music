@@ -1,0 +1,10 @@
+.playerCard {
+  border-radius: var(--br-radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+body[data-dark-mode] .playerCard {
+  background: var(--bg-lighter);
+  color: var(--fg);
+}
