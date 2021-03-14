@@ -1,0 +1,22 @@
+.playerQueue {
+  border-radius: var(--br-radius);
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+body[data-dark-mode] .playerQueue {
+  background: var(--bg-lighter);
+  color: var(--fg);
+}
+
+.playerList {
+  max-height: 250px;
+  overflow: auto;
+}
+
+.queueListItem {
+  font-size: 14px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

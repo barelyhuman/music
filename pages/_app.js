@@ -1,43 +1,17 @@
 import Head from 'lib/components/head'
 import Nprogress from 'lib/components/nprogress'
 import 'toastify-js/src/toastify.css'
+import 'styles/global.css'
+import PlayerProvider from 'lib/components/player-provider'
 
 function App({ Component, pageProps }) {
   return (
     <>
       <Head />
       <Nprogress />
-      <Component {...pageProps} />
-      <style jsx global>
-        {`
-          body {
-            background: #fff;
-            font-family: 'Inter', sans-serif;
-            overflow: hidden;
-          }
-
-          .cursor-pointer {
-            cursor: pointer;
-          }
-
-          .flex {
-            display: flex;
-          }
-          .just-center {
-            justify-content: center;
-          }
-          .align-center {
-            align-items: center;
-          }
-          .flex-col {
-            flex-direction: column;
-          }
-
-          .just-between {
-            justify-content: space-between;
-          }
-        `}
-      </style>
+      <PlayerProvider>
+        <Component {...pageProps} />
+      </PlayerProvider>
     </>
   )
 }
