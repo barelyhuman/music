@@ -46,6 +46,11 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@barelyreaper/conch@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@barelyreaper/conch/-/conch-0.0.4.tgz#270dde536357daf5b87d3e4ff181a98ccdc37411"
+  integrity sha512-y1Y5JmXoUNdvgfWquFe9olJDrOjJ2iJ6QtSxuGSH2CGtbdaTlj7H+ZIADebs5k7FQE4LwMgrGGGikC+CQd2hvQ==
+
 "@barelyreaper/themer@^0.0.10":
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/@barelyreaper/themer/-/themer-0.0.10.tgz#c3fae158f07de1e6f260a5d3a1bcd773a95bdb1e"

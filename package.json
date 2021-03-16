@@ -9,6 +9,7 @@
     "fix": "prettier --write ."
   },
   "dependencies": {
+    "@barelyreaper/conch": "^0.0.4",
     "@barelyreaper/themer": "^0.0.10",
     "feather-icons": "^4.28.0",
     "lodash.debounce": "^4.0.8",
