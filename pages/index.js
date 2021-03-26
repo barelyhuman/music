@@ -68,14 +68,14 @@ export default function Home() {
   return (
     <>
       <Header />
+      <div className="container-boundaries">
+        <TrackSearch />
+      </div>
       <div className="container-boundaries mt-1 w-100">
         <PlayerCard />
       </div>
       <div className="container-boundaries mt-1 w-100">
         <PlaylistCard />
-      </div>
-      <div className="container-boundaries">
-        <TrackSearch />
       </div>
       <Footer />
     </>
