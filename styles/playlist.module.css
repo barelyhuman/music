@@ -1,11 +1,11 @@
 .playerQueue {
   border-radius: var(--br-radius);
-  padding: 16px;
+  padding: 16px 8px;
   box-shadow: var(--shadow);
 }
 
 body[data-dark-mode] .playerQueue {
-  background: var(--bg-lighter);
+  background: var(--bg-light);
   color: var(--fg);
 }
 
