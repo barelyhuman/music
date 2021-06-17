@@ -5,6 +5,6 @@
 }
 
 body[data-dark-mode] .playerCard {
-  background: var(--bg-lighter);
+  background: var(--bg-light);
   color: var(--fg);
 }
