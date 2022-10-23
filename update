@@ -1,23 +1,32 @@
 #!/usr/bin/env bash
 
 # example 
-# update start  => start the server
-# update => restart the server
+# update => just update the server
+# update start => start the server
+# update kill => kill the server
+# update restart => restart the server
+# update noop v2 => update with v2
+
 
 APP_NAME="music-unified"
 
 source ~/.nvm/nvm.sh
 nvm use 14 
 
-git pull origin master
+git fetch --all
+
+if [ -z "$2" ]; then 
+    git checkout "$2"
+else 
+    git pull origin main
+fi
+
 yarn install --frozen-lockfile 
 yarn build 
 
-if [ "$1" == "start" ];then 
-    pm2 start "yarn start -p 3001" --name=$APP_NAME
-else
-    pm2 restart $APP_NAME
-fi
-
-
+case "$1" in
+    start) pm2 start "yarn start -p 3001" --name=$APP_NAME ;;
+    kill) pm2 del --name=$APP_NAME ;;
+    restart) pm2 restart --name=$APP_NAME ;;
+esac
 
