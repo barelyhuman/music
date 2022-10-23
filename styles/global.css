@@ -1,0 +1,58 @@
+:root {
+  /* grounds */
+  --bg: #fff;
+  --fg: #000;
+
+  /* grays */
+  --a0: #ddd;
+  --a1: #d3d3d3;
+  --a2: #bebebe;
+  --a3: #aaa;
+  --a4: #959595;
+  --a5: #818181;
+  --a6: #656565;
+  --a7: #494949;
+  --a8: #2d2d2d;
+  --a9: #111;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* grounds */
+    --bg: #000;
+    --fg: #fff;
+
+    /* grays */
+    --a0: #111;
+    --a1: #2d2d2d;
+    --a2: #494949;
+    --a3: #656565;
+    --a4: #818181;
+    --a5: #959595;
+    --a6: #aaa;
+    --a7: #bebebe;
+    --a8: #d3d3d3;
+    --a9: #ddd;
+  }
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+input {
+  background: var(--bg);
+  color: var(--fg);
+  border-radius: 6px;
+  padding: 8px;
+  outline: black;
+  border: 1px solid var(--a0);
+}
+
+a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
