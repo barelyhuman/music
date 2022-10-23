@@ -18,9 +18,9 @@ nvm use 14
 git fetch --all
 
 if [ -z "$2" ]; then 
-    git checkout "$2"
-else 
     git pull origin main
+else
+    git checkout "$2" 
 fi
 
 yarn install --frozen-lockfile 
@@ -28,7 +28,7 @@ yarn build
 
 case "$1" in
     start) pm2 start "yarn start -p 3001" --name=$APP_NAME ;;
-    kill) pm2 del --name=$APP_NAME ;;
-    restart) pm2 restart --name=$APP_NAME ;;
+    kill) pm2 del $APP_NAME ;;
+    restart) pm2 restart $APP_NAME ;;
 esac
 
