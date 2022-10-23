@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+APP_NAME="music-unified"
+
+source ~/.nvm/nvm.sh
+nvm use 14 
+
+git pull origin master
+yarn install --frozen-lockfile 
+yarn build 
+pm2 restart $APP_NAME
