@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# example 
+# update start  => start the server
+# update => restart the server
+
 APP_NAME="music-unified"
 
 source ~/.nvm/nvm.sh
@@ -8,4 +12,12 @@ nvm use 14
 git pull origin master
 yarn install --frozen-lockfile 
 yarn build 
-pm2 restart $APP_NAME
+
+if [ "$1" == "start" ];then 
+    pm2 start "yarn start -p 3001" --name=$APP_NAME
+else
+    pm2 restart $APP_NAME
+fi
+
+
+
