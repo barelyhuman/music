@@ -10,6 +10,8 @@
 
 APP_NAME="music-unified"
 
+cd "$(dirname "$0")"
+
 source ~/.nvm/nvm.sh
 nvm use 14 
 
