@@ -1,3 +1,3 @@
 export const STORAGE = {
-  TRACKS: "tracks",
-};
+  TRACKS: 'tracks',
+}

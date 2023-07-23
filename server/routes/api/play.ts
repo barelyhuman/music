@@ -1,47 +1,47 @@
-import ytdl, { downloadOptions } from "ytdl-core";
-import rangeParser from "range-parser";
-const { getInfo, chooseFormat, downloadFromInfo } = ytdl;
+import ytdl, { downloadOptions } from 'ytdl-core'
+import rangeParser from 'range-parser'
+const { getInfo, chooseFormat, downloadFromInfo } = ytdl
 
-export default defineEventHandler(async (event) => {
-  const query = <{ link: string }>getQuery(event);
-  const info = await getInfo(query.link);
+export default defineEventHandler(async event => {
+  const query = <{ link: string }>getQuery(event)
+  const info = await getInfo(query.link)
 
   const selectedFormat = chooseFormat(info.formats, {
-    quality: "highestaudio",
-  });
+    quality: 'highestaudio',
+  })
 
-  const headers = getHeaders(event);
+  const headers = getHeaders(event)
 
   const options: downloadOptions = {
-    filter: "audioonly",
+    filter: 'audioonly',
     format: selectedFormat,
-  };
+  }
 
-  const baseStream = downloadFromInfo(info, options);
+  const baseStream = downloadFromInfo(info, options)
 
   if (headers.range) {
-    const readableLength = selectedFormat.contentLength;
-    const range = rangeParser(parseInt(readableLength, 10), headers.range);
+    const readableLength = selectedFormat.contentLength
+    const range = rangeParser(parseInt(readableLength, 10), headers.range)
 
     if (range === -1) {
-      return baseStream;
+      return baseStream
     }
 
     if (!(Array.isArray(range) && range.length)) {
-      return baseStream;
+      return baseStream
     }
 
-    const start = range[0].start;
-    const end = range[0].end;
-    setResponseHeader(event, "Accept-Ranges", "bytes");
-    setResponseHeader(event, "Content-Type", "audio/mp3");
-    setResponseStatus(event, 206);
+    const start = range[0].start
+    const end = range[0].end
+    setResponseHeader(event, 'Accept-Ranges', 'bytes')
+    setResponseHeader(event, 'Content-Type', 'audio/mp3')
+    setResponseStatus(event, 206)
     setResponseHeader(
       event,
-      "Content-Range",
+      'Content-Range',
       `bytes ${start}-${end}/${readableLength}`
-    );
-    setResponseHeader(event, "Content-Length", end - start + 1);
+    )
+    setResponseHeader(event, 'Content-Length', end - start + 1)
     // setResponseHeader(event, "Connection", "keep-alive");
     return downloadFromInfo(info, {
       ...options,
@@ -49,8 +49,8 @@ export default defineEventHandler(async (event) => {
         start: start,
         end: end,
       },
-    });
+    })
   }
 
-  return baseStream;
-});
+  return baseStream
+})
