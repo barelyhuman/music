@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# example 
+# update => just update the server
+# update start => start the server
+# update kill => kill the server
+# update restart => restart the server
+# update noop v2 => update with v2
+
+
+APP_NAME="music-unified"
+
+cd "$(dirname "$0")"
+
+source ~/.nvm/nvm.sh
+nvm use 18
+
+git fetch --all
+
+if [ -z "$2" ]; then 
+    git pull origin main
+else
+    git checkout "$2" 
+fi
+
+npm i -g pnpm@8.6.2
+
+pnpm install --frozen-lockfile 
+pnpm build
+
+case "$1" in
+    start) pm2 start "PORT=3001 node .output/server/index.mjs" --name=$APP_NAME ;;
+    kill) pm2 del $APP_NAME ;;
+    restart) pm2 restart $APP_NAME ;;
+esac
+
