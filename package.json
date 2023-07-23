@@ -1,0 +1,23 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@types/node": "^18.17.0",
+    "nuxt": "^3.6.5"
+  },
+  "dependencies": {
+    "@types/range-parser": "^1.2.4",
+    "@unocss/nuxt": "^0.53.6",
+    "howler": "^2.2.3",
+    "range-parser": "^1.2.1",
+    "ytdl-core": "^4.11.5"
+  }
+}
