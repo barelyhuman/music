@@ -167,7 +167,7 @@ function onPlayPause() {
       </ul>
     </div>
 
-    <p v-if="playlist.length === 0">Nothing to show...</p>
+    <p text-gray v-if="playlist.length === 0">Nothing to show...</p>
   </div>
   <div text-gray text-sm fixed bottom-2 left-0 right-0 text-center>
     <p>
