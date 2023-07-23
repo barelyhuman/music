@@ -22,6 +22,9 @@ dependencies:
     version: 4.11.5
 
 devDependencies:
+  '@barelyhuman/prettier-config':
+    specifier: ^1.1.0
+    version: 1.1.0
   '@nuxt/devtools':
     specifier: latest
     version: 0.7.0(nuxt@3.6.5)(vite@4.4.6)
@@ -31,6 +34,9 @@ devDependencies:
   nuxt:
     specifier: ^3.6.5
     version: 3.6.5(@types/node@18.17.0)
+  prettier:
+    specifier: ^3.0.0
+    version: 3.0.0
 
 packages:
 
@@ -331,6 +337,10 @@ packages:
       '@babel/helper-string-parser': 7.22.5
       '@babel/helper-validator-identifier': 7.22.5
       to-fast-properties: 2.0.0
+
+  /@barelyhuman/prettier-config@1.1.0:
+    resolution: {integrity: sha512-OlommcxHffkX+BtAsXP1ipK0WzKgNha5a+T+reNlNZZkHPZzZrLpQ23snAbubN4xZiV73Z6E+To02ZZka0eTTQ==}
+    dev: true
 
   /@cloudflare/kv-asset-handler@0.3.0:
     resolution: {integrity: sha512-9CB/MKf/wdvbfkUdfrj+OkEwZ5b7rws0eogJ4293h+7b6KX5toPwym+VQKmILafNB9YiehqY0DlNrDcDhdWHSQ==}
@@ -5451,6 +5461,12 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
+
+  /prettier@3.0.0:
+    resolution: {integrity: sha512-zBf5eHpwHOGPC47h0zrPyNn+eAEIdEzfywMoYn2XPi0P44Zp0tSq64rq0xAREh4auw2cJZHo9QUob+NqCQky4g==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /pretty-bytes@6.1.1:
     resolution: {integrity: sha512-mQUvGU6aUFQ+rNvTIAcZuWGRT9a6f6Yrg9bHs4ImKF+HZCEK+plBvnAZYSIQztknZF2qnzNtr6F8s0+IuptdlQ==}

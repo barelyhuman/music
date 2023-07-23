@@ -4,20 +4,24 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "fix": "prettier --write .",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "preview": "nuxt preview"
   },
-  "devDependencies": {
-    "@nuxt/devtools": "latest",
-    "@types/node": "^18.17.0",
-    "nuxt": "^3.6.5"
-  },
+  "prettier": "@barelyhuman/prettier-config",
   "dependencies": {
     "@types/range-parser": "^1.2.4",
     "@unocss/nuxt": "^0.53.6",
     "howler": "^2.2.3",
     "range-parser": "^1.2.1",
     "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "@barelyhuman/prettier-config": "^1.1.0",
+    "@nuxt/devtools": "latest",
+    "@types/node": "^18.17.0",
+    "nuxt": "^3.6.5",
+    "prettier": "^3.0.0"
   }
 }

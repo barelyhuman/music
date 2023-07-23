@@ -1,24 +1,26 @@
 <script setup>
-import { Howl, Howler } from "howler";
-import { STORAGE } from "../lib/constants";
-import { isSafari } from "../lib/browser";
+import { Howl, Howler } from 'howler'
+import { STORAGE } from '../lib/constants'
+import { isSafari } from '../lib/browser'
+import { createAlert } from '../lib/alert'
 
-Howler.autoUnlock = true;
+Howler.autoUnlock = true
 
 let player = new Howl({
-  src: [""],
-  format: "mp3",
-});
+  src: [''],
+  format: 'mp3',
+})
 
-const currLink = ref("");
+const currLink = ref('')
+const msg = ref('')
+const activeIndex = ref(-1)
+const playlist = ref([])
+const processing = ref(false)
+const loading = ref(false)
+const error = ref('')
 
-const activeIndex = ref(-1);
-
-const playlist = ref([]);
-
-const processing = ref(false);
-const loading = ref(false);
-const error = ref("");
+const errorAlert = createAlert(error)
+const successAlert = createAlert(msg)
 
 onMounted(() => {
   // Disable html5 in safari since the
@@ -26,106 +28,119 @@ onMounted(() => {
   // that we have in node
   if (!isSafari()) {
     player = new Howl({
-      src: [""],
-      format: "mp3",
+      src: [''],
+      format: 'mp3',
       html5: true,
-    });
+    })
   }
 
-  let items = localStorage.getItem(STORAGE.TRACKS);
+  let items = localStorage.getItem(STORAGE.TRACKS)
 
   if (!items) {
-    items = [];
+    items = []
   }
 
   try {
-    items = JSON.parse(items);
+    items = JSON.parse(items)
   } catch (err) {
     // Digest
   }
-  playlist.value = items;
+  playlist.value = items
 
   // Setup howler listeners
-  player.on("load", () => {
-    player.play();
-  });
+  player.on('load', () => {
+    player.play()
+  })
 
-  player.on("playerror", (err) => {
-    error.value = err;
-  });
+  player.on('playerror', err => {
+    error.value = err
+  })
 
-  player.on("play", () => {
-    loading.value = false;
-  });
+  player.on('play', () => {
+    loading.value = false
+  })
 
-  player.on("end", () => {
+  player.on('end', () => {
     if (activeIndex.value + 1 > playlist.value.length - 1) {
-      activeIndex.value = -1;
-      return;
+      activeIndex.value = -1
+      return
     }
 
-    onNext();
-  });
-});
+    onNext()
+  })
+})
 
 watch(playlist, () => {
-  let value = [];
+  let value = []
   if (playlist.value) {
-    value = playlist.value;
+    value = playlist.value
   }
-  localStorage.setItem(STORAGE.TRACKS, JSON.stringify(value));
-});
+  localStorage.setItem(STORAGE.TRACKS, JSON.stringify(value))
+})
 
 async function addToPlaylist(link) {
-  processing.value = true;
-  const title = await $fetch(`/api/info?link=${link}`).then((x) => x.title);
-  const playableLink = `/api/play?link=${link}`;
+  currLink.value = ''
+
+  const playableLink = `/api/play?link=${link}`
+
+  const existingSet = new Set(playlist.value.map(x => x.link))
+
+  if (existingSet.has(playableLink)) {
+    errorAlert('Track already exists in the playlist...')
+    return
+  }
+  processing.value = true
+  const title = await $fetch(`/api/info?link=${link}`).then(x => x.title)
+
   playlist.value = playlist.value.concat({
     title,
     link: playableLink,
-  });
-  processing.value = false;
+  })
+  processing.value = false
+
+  successAlert('Added to playlist')
 }
 
 function removeFromPlaylist(link) {
-  playlist.value = playlist.value.filter((x) => x.link !== link);
+  playlist.value = playlist.value.filter(x => x.link !== link)
+  successAlert('Removed from playlist')
 }
 
 function onTrackClick(index) {
-  loading.value = true;
-  playAtIndex(index);
+  loading.value = true
+  playAtIndex(index)
 }
 
 async function playAtIndex(toPlayIndex) {
-  const toPlay = playlist.value[toPlayIndex];
-  if (!toPlay) return;
-  player.stop();
-  player.unload();
-  player._src = [toPlay.link];
-  player.load();
-  player.volume(1);
-  activeIndex.value = toPlayIndex;
+  const toPlay = playlist.value[toPlayIndex]
+  if (!toPlay) return
+  player.stop()
+  player.unload()
+  player._src = [toPlay.link]
+  player.load()
+  player.volume(1)
+  activeIndex.value = toPlayIndex
 }
 
 function onNext() {
-  const nextIndex = activeIndex.value + 1;
-  if (!playlist.value[nextIndex]) return;
-  loading.value = true;
-  playAtIndex(nextIndex);
+  const nextIndex = activeIndex.value + 1
+  if (!playlist.value[nextIndex]) return
+  loading.value = true
+  playAtIndex(nextIndex)
 }
 
 function onPrev() {
-  const prevIndex = activeIndex.value - 1;
-  if (!playlist.value[prevIndex]) return;
-  loading.value = true;
-  playAtIndex(prevIndex);
+  const prevIndex = activeIndex.value - 1
+  if (!playlist.value[prevIndex]) return
+  loading.value = true
+  playAtIndex(prevIndex)
 }
 
 function onPlayPause() {
   if (player.playing()) {
-    player.pause();
+    player.pause()
   } else {
-    player.play();
+    player.play()
   }
 }
 </script>
@@ -143,7 +158,12 @@ function onPlayPause() {
     <div text-gray>
       <p v-if="processing">Getting track details...</p>
       <p v-if="loading">Loading Music...</p>
-      <p v-if="error">{{ error }}</p>
+      <p text-red-100 bg-red-400 px-3 py-2 rounded-md v-if="error">
+        {{ error }}
+      </p>
+      <p text-emerald-100 bg-emerald-400 px-3 py-2 rounded-md v-if="msg">
+        {{ msg }}
+      </p>
     </div>
 
     <div flex items-center gap-3>
