@@ -108,13 +108,17 @@ async function playAtIndex(toPlayIndex) {
 }
 
 function onNext() {
+  const nextIndex = activeIndex.value + 1;
+  if (!playlist.value[nextIndex]) return;
   loading.value = true;
-  playAtIndex(activeIndex.value + 1);
+  playAtIndex(nextIndex);
 }
 
 function onPrev() {
+  const prevIndex = activeIndex.value - 1;
+  if (!playlist.value[prevIndex]) return;
   loading.value = true;
-  playAtIndex(activeIndex.value - 1);
+  playAtIndex(prevIndex);
 }
 
 function onPlayPause() {
