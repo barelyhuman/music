@@ -227,7 +227,7 @@ function onPlayPause() {
           <p
             p-0
             m-0
-            class="border-0 appearance-none"
+            class="border-0 appearance-none transition-colors duration-300"
             :style="{ color: volumeTextColor }"
           >
             {{ volume }}
