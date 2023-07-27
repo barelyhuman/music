@@ -1,7 +1,8 @@
 :root {
   --dark: #23283d;
-  --gray: #a8b0d3;
+  --gray: #8692c1;
   --light: #e9ecf8;
+  --accent: #10b981;
 
   --bg: #fff;
   --fg: var(--dark);
@@ -12,6 +13,7 @@
     --dark: #eceff4;
     --gray: #555;
     --light: #333;
+    --accent: #34d399;
     --bg: #181819;
   }
 }
@@ -46,11 +48,6 @@ input {
 ::placeholder {
   color: var(--gray);
   opacity: 1;
-}
-
-input:focus {
-  border: 1px solid var(--dark);
-  color: var(--dark);
 }
 
 button {

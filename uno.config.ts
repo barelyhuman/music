@@ -8,6 +8,7 @@ export default defineConfig({
       gray: 'var(--gray)',
       light: 'var(--light)',
       dark: 'var(--dark)',
+      accent: 'var(--accent)',
     },
   },
 })

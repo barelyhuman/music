@@ -11,13 +11,17 @@ let player = new Howl({
   format: 'mp3',
 })
 
+const volumeSteps = 5
 const currLink = ref('')
 const msg = ref('')
 const activeIndex = ref(-1)
 const playlist = ref([])
+const volume = ref(100)
 const processing = ref(false)
 const loading = ref(false)
 const error = ref('')
+let volumeChangeRef = null
+let volumeTextColor = ref('var(--gray)')
 
 const errorAlert = createAlert(error)
 const successAlert = createAlert(msg)
@@ -68,6 +72,12 @@ onMounted(() => {
 
     onNext()
   })
+
+  window.addEventListener('keydown', windowKeyHandler)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', windowKeyHandler)
 })
 
 watch(playlist, () => {
@@ -77,6 +87,42 @@ watch(playlist, () => {
   }
   localStorage.setItem(STORAGE.TRACKS, JSON.stringify(value))
 })
+
+watch(volume, () => {
+  const playerVol = volume.value / 100
+  if (volumeChangeRef) {
+    clearTimeout(volumeChangeRef)
+  }
+  volumeTextColor.value = 'var(--accent)'
+  volumeChangeRef = setTimeout(() => {
+    volumeTextColor.value = 'var(--gray)'
+  }, 750)
+  player.volume(playerVol)
+})
+
+function windowKeyHandler(e) {
+  volumeControls(e)
+}
+
+function volumeControls(e) {
+  switch (e.code) {
+    case 'ArrowUp': {
+      if (volume.value + volumeSteps > 100) {
+        return
+      }
+      volume.value += volumeSteps
+      break
+    }
+    case 'ArrowDown': {
+      if (volume.value - volumeSteps < 0) {
+        return
+      }
+      volume.value -= volumeSteps
+      break
+    }
+  }
+  return
+}
 
 async function addToPlaylist(link) {
   currLink.value = ''
@@ -118,7 +164,7 @@ async function playAtIndex(toPlayIndex) {
   player.unload()
   player._src = [toPlay.link]
   player.load()
-  player.volume(1)
+  player.volume(volume.value / 100)
   activeIndex.value = toPlayIndex
 }
 
@@ -166,10 +212,31 @@ function onPlayPause() {
       </p>
     </div>
 
-    <div flex items-center gap-3>
+    <div flex items-start gap-3>
       <button @click="onPrev()">Prev</button>
       <button @click="onPlayPause()">Play/Pause</button>
       <button @click="onNext()">Next</button>
+      <div flex flex-col>
+        <div
+          flex
+          items-center
+          gap-2
+          class="border border-solid rounded-md p-2 border-light"
+        >
+          <p text-gray class="p-0 m-0">Volume</p>
+          <p
+            p-0
+            m-0
+            class="border-0 appearance-none"
+            :style="{ color: volumeTextColor }"
+          >
+            {{ volume }}
+          </p>
+        </div>
+        <p p-0 m-0 text-gray text-xs>
+          <small> Control volume with Up/Down </small>
+        </p>
+      </div>
     </div>
 
     <div>
@@ -213,7 +280,7 @@ h3 {
 .music-container {
   display: flex;
   flex-direction: column;
-  width: 400px;
+  width: 600px;
   margin: 0 auto;
   margin-top: 25vh;
   gap: 14px;
