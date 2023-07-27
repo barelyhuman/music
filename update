@@ -31,6 +31,6 @@ pnpm build
 case "$1" in
     start) pm2 start "PORT=3001 node .output/server/index.mjs" --name=$APP_NAME ;;
     kill) pm2 del $APP_NAME ;;
-    restart) pm2 restart $APP_NAME ;;
+    restart) pm2 restart $APP_NAME --update-env;;
 esac
 
