@@ -1,4 +1,4 @@
-import ytdl from 'ytdl-core'
+import ytdl from '@distube/ytdl-core'
 
 export default defineEventHandler(async event => {
   const query = getQuery(event)

@@ -11,17 +11,17 @@
   },
   "prettier": "@barelyhuman/prettier-config",
   "dependencies": {
-    "@types/range-parser": "^1.2.4",
-    "@unocss/nuxt": "^0.53.6",
-    "howler": "^2.2.3",
-    "range-parser": "^1.2.1",
-    "ytdl-core": "^4.11.5"
+    "@distube/ytdl-core": "^4.14.4",
+    "@types/range-parser": "^1.2.7",
+    "@unocss/nuxt": "^0.62.3",
+    "howler": "^2.2.4",
+    "range-parser": "^1.2.1"
   },
   "devDependencies": {
     "@barelyhuman/prettier-config": "^1.1.0",
     "@nuxt/devtools": "latest",
-    "@types/node": "^18.17.0",
-    "nuxt": "^3.6.5",
-    "prettier": "^3.0.0"
+    "@types/node": "^22.5.4",
+    "nuxt": "^3.13.1",
+    "prettier": "^3.3.3"
   }
 }

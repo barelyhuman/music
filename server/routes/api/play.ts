@@ -1,4 +1,4 @@
-import ytdl, { downloadOptions } from 'ytdl-core'
+import ytdl, { downloadOptions } from '@distube/ytdl-core'
 import rangeParser from 'range-parser'
 const { getInfo, chooseFormat, downloadFromInfo } = ytdl
 
