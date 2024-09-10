@@ -13,7 +13,10 @@ APP_NAME="music-unified"
 cd "$(dirname "$0")"
 
 source ~/.nvm/nvm.sh
-nvm use 18
+CURRENT_VERSION=$(node -v)
+nvm install 20
+nvm use 20
+INTERPRETER_PATH=$(which node)
 
 git fetch --all
 
@@ -23,14 +26,16 @@ else
     git checkout "$2" 
 fi
 
-npm i -g pnpm@8.6.2
+npm i -g pnpm@9.9.0
 
 pnpm install --frozen-lockfile 
 pnpm build
 
+nvm use $CURRENT_VERSION
+
 case "$1" in
-    start) pm2 start "PORT=3001 node .output/server/index.mjs" --name=$APP_NAME ;;
-    kill) pm2 del $APP_NAME ;;
-    restart) pm2 restart $APP_NAME --update-env;;
+    start) pm2 --interpreter="$INTERPRETER_PATH" start "PORT=3001 node .output/server/index.mjs" --name=$APP_NAME ;;
+    kill) pm2 --interpreter="$INTERPRETER_PATH" del $APP_NAME ;;
+    restart) pm2 --interpreter="$INTERPRETER_PATH" restart $APP_NAME --update-env;;
 esac
 
