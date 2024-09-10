@@ -4,7 +4,6 @@
 # update => just update the server
 # update start => start the server
 # update kill => kill the server
-# update restart => restart the server
 # update noop v2 => update with v2
 
 
@@ -18,6 +17,8 @@ nvm install 20
 nvm use 20
 INTERPRETER_PATH=$(which node)
 
+corepack enable
+
 git fetch --all
 
 if [ -z "$2" ]; then 
@@ -26,16 +27,15 @@ else
     git checkout "$2" 
 fi
 
-npm i -g pnpm@9.9.0
-
-pnpm install --frozen-lockfile 
-pnpm build
-
 nvm use $CURRENT_VERSION
 
-case "$1" in
-    start) PORT=3001 pm2 --interpreter="$INTERPRETER_PATH" start ".output/server/index.mjs" --name=$APP_NAME ;;
-    kill) pm2 del $APP_NAME ;;
-    restart) pm2 restart $APP_NAME --update-env;;
-esac
+if [ $1 -eq "kill" ]; then
+    pm2 del $APP_NAME
+fi
 
+if [ $1 -eq "start" ]; then
+    pnpm install --frozen-lockfile 
+    pnpm build
+    pm2 del $APP_NAME
+    PORT=3001 pm2 --interpreter="$INTERPRETER_PATH" start ".output/server/index.mjs" --name=$APP_NAME ;;
+fi
