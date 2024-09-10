@@ -11,11 +11,9 @@
   },
   "prettier": "@barelyhuman/prettier-config",
   "dependencies": {
-    "@distube/ytdl-core": "^4.14.4",
-    "@types/range-parser": "^1.2.7",
     "@unocss/nuxt": "^0.62.3",
     "howler": "^2.2.4",
-    "range-parser": "^1.2.1"
+    "mnemonist": "^0.39.8"
   },
   "devDependencies": {
     "@barelyhuman/prettier-config": "^1.1.0",

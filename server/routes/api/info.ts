@@ -1,10 +1,7 @@
-import ytdl from '@distube/ytdl-core'
+import { getDetails } from '~/lib/agent'
 
 export default defineEventHandler(async event => {
   const query = getQuery(event)
   if (!(typeof query === 'object' && query.link)) return
-  const info = await ytdl.getInfo(query.link as string)
-  return {
-    title: info.videoDetails.title,
-  }
+  return getDetails(query.link as string)
 })

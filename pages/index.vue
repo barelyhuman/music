@@ -125,30 +125,38 @@ function volumeControls(e) {
 }
 
 async function addToPlaylist(link) {
-  currLink.value = ''
+  try {
+    currLink.value = ''
 
-  const playableLink = `/api/play?link=${link}`
+    const playableLink = `/api/play?link=${link}`
 
-  const existingSet = new Set(playlist.value.map(x => x.link))
+    const existingSet = new Set(playlist.value.map(x => x.link))
 
-  if (existingSet.has(playableLink)) {
-    errorAlert('Track already exists in the playlist...')
-    return
+    if (existingSet.has(playableLink)) {
+      errorAlert('Track already exists in the playlist...')
+      return
+    }
+    processing.value = true
+    const title = await $fetch(`/api/info?link=${link}`).then(x => x.title)
+
+    playlist.value = playlist.value.concat({
+      title,
+      link: playableLink,
+    })
+    processing.value = false
+
+    successAlert('Added to playlist')
+  } catch (err) {
+    errorAlert('Could not process for some reason')
+  } finally {
+    processing.value = false
   }
-  processing.value = true
-  const title = await $fetch(`/api/info?link=${link}`).then(x => x.title)
-
-  playlist.value = playlist.value.concat({
-    title,
-    link: playableLink,
-  })
-  processing.value = false
-
-  successAlert('Added to playlist')
 }
 
 function removeFromPlaylist(link) {
   playlist.value = playlist.value.filter(x => x.link !== link)
+  player.stop()
+  player.unload()
   successAlert('Removed from playlist')
 }
 
@@ -217,19 +225,10 @@ function onPlayPause() {
       <button @click="onPlayPause()">Play/Pause</button>
       <button @click="onNext()">Next</button>
       <div flex flex-col>
-        <div
-          flex
-          items-center
-          gap-2
-          class="border border-solid rounded-md p-2 border-light"
-        >
+        <div flex items-center gap-2 class="border border-solid rounded-md p-2 border-light">
           <p text-gray class="p-0 m-0">Volume</p>
-          <p
-            p-0
-            m-0
-            class="border-0 appearance-none transition-colors duration-300"
-            :style="{ color: volumeTextColor }"
-          >
+          <p p-0 m-0 class="border-0 appearance-none transition-colors duration-300"
+            :style="{ color: volumeTextColor }">
             {{ volume }}
           </p>
         </div>
@@ -243,14 +242,10 @@ function onPlayPause() {
       <h3>Playlist</h3>
       <ul v-if="playlist.length > 0" class="max-h-[350px]" overflow-y-auto>
         <li flex items-center justify-between v-for="(x, index) in playlist">
-          <a
-            @click="onTrackClick(index)"
-            :class="
-              activeIndex == index
-                ? 'dark:text-emerald-400 text-emerald-500'
-                : ''
-            "
-          >
+          <a @click="onTrackClick(index)" :class="activeIndex == index
+              ? 'dark:text-emerald-400 text-emerald-500'
+              : ''
+            ">
             {{ x.title || x.link }}
           </a>
           <button @click="removeFromPlaylist(x.link)">Remove</button>
@@ -263,10 +258,8 @@ function onPlayPause() {
   <div text-gray text-sm fixed bottom-2 left-0 right-0 text-center>
     <p>
       <strong>Note: </strong>
-      <small
-        >Please try to avoid using this on Safari, it'll work, won't be nearly
-        as fast as the other browsers though</small
-      >
+      <small>Please try to avoid using this on Safari, it'll work, won't be nearly
+        as fast as the other browsers though</small>
     </p>
   </div>
 </template>
