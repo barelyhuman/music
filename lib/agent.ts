@@ -1,9 +1,9 @@
-import LRUCache from 'mnemonist/lru-cache'
+import LRUCache from 'mnemonist/lru-cache.js'
 
 const instances = [
-  'https://pipedapi.in.projectsegfau.lt',
-  'https://pipedapi.kavin.rocks',
-  'https://api.piped.yt',
+  'http://pipedapi.in.projectsegfau.lt',
+  'http://pipedapi.kavin.rocks',
+  'http://api.piped.yt',
 ]
 
 type TrimmedData = {
@@ -45,17 +45,19 @@ export async function getDetails(link: string): Promise<TrimmedData> {
     instances.map(async link => {
       const url = new URL(`/streams/${videoId}`, link)
       const response = await fetch(url.href, {
-        signal: AbortSignal.timeout(2000),
+        signal: AbortSignal.timeout(5000),
       })
       if (response.ok) {
         return response.json()
       }
-      throw new Error(await response.json())
+      throw new Error((await response.json()).error)
     })
   )
 
   const workingInstance = resolutions.find(d => d.status === 'fulfilled')
   if (!(workingInstance && workingInstance.status === 'fulfilled')) {
+    resolutions.forEach(d => d.status === 'rejected' && console.error(d.reason))
+    cache.clear()
     throw new Error("We don't have a working proxy")
   }
   const trimmedData = trimData(workingInstance.value)
