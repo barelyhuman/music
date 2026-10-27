@@ -20,7 +20,7 @@
     "@barelyhuman/prettier-config": "^1.1.0",
     "@nuxt/devtools": "latest",
     "@types/node": "^22.5.4",
-    "nuxt": "^3.13.1",
+    "nuxt": "^4.6.2",
     "prettier": "^3.3.3"
   },
   "pnpm": {
